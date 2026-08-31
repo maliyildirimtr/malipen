@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaliPen — Your Screen. Your Canvas.</title>
+  <meta name="description" content="MaliPen is a powerful screen annotation and digital whiteboard app for macOS and Windows. Draw, highlight, annotate, and present directly on your desktop." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">
+      MaliPen
+      <svg class="logo-swoosh" viewBox="0 0 100 20" preserveAspectRatio="none">
+        <path d="M5,15 Q50,0 95,12" stroke="#0ea5e9" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#use-cases" class="nav-link">Use Cases</a>
+      <a href="https://github.com/maliy00/MaliPen" target="_blank" class="nav-link" style="display: flex; align-items: center; gap: 6px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg> GitHub
+      </a>
+    </div>
+    <div class="nav-right">
+      <a id="btn-try-live" href="http://localhost:5180" target="_blank" class="nav-cta" style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.5); display: flex; align-items: center; gap: 6px; text-decoration: none;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        Try on Web
+      </a>
+      <a href="#download" class="nav-cta">Download Free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=2850&q=80');"></div>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Text -->
+      <div class="hero-text">
+        <h1 class="hero-title reveal">
+          <span>Your Screen.</span><br>
+          <span class="hero-title-line2">Your Canvas.</span>
+        </h1>
+        <p class="hero-desc reveal reveal-delay-1">
+          <span>Draw, annotate, explain, and create directly on your desktop — over any app, any window, any content.</span>
+        </p>
+        <div class="hero-ctas reveal reveal-delay-2">
+          <a href="#download" class="btn-primary" style="display:flex; align-items:center; gap:8px;">
+            <svg viewBox="0 0 384 512" width="16" height="16" fill="currentColor">
+              <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+            </svg>
+            <span>Download for macOS</span>
+          </a>
+          <a href="#download" class="btn-secondary" style="display:flex; align-items:center; gap:8px;">
+            <svg viewBox="0 0 448 512" width="16" height="16" fill="currentColor">
+              <path d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"/>
+            </svg>
+            <span>Download for Windows</span>
+          </a>
+        </div>
+        <div style="margin-top: 16px; font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500; letter-spacing: 0.05em;">Current Version: 1.0.0</div>
+      </div>
+
+      <!-- Product Scene (Just Toolbar like Epic Pen) -->
+      <div class="hero-scene reveal reveal-delay-2" style="display: flex; justify-content: center; align-items: center;">
+        <div class="hero-toolbar-replica">
+          <div class="htr-drag">
+            <span></span>
+            <span></span>
+          </div>
+          <div class="htr-btn active-blue">
+            <i data-lucide="mouse-pointer-2" width="20" height="20"></i>
+          </div>
+          <div class="htr-btn active-red">
+            <i data-lucide="pen" width="20" height="20"></i>
+          </div>
+          <div class="htr-divider"></div>
+          <div class="htr-btn">
+            <i data-lucide="highlighter" width="20" height="20"></i>
+          </div>
+          <div class="htr-btn">
+            <i data-lucide="type" width="20" height="20"></i>
+          </div>
+          <div class="htr-btn">
+            <i data-lucide="shapes" width="20" height="20"></i>
+          </div>
+          <div class="htr-divider"></div>
+          <div class="htr-btn">
+            <i data-lucide="eraser" width="20" height="20"></i>
+          </div>
+          <div class="htr-btn">
+            <i data-lucide="sun" width="20" height="20"></i>
+          </div>
+          <div class="htr-divider"></div>
+          <div class="htr-color-picker"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SCREEN ANNOTATION SECTION
+     ============================================================ -->
+<section class="section annotation-section" id="features">
+  <div class="container">
+    <div class="annotation-inner">
+      <!-- Scene visual -->
+      <div class="annotation-scene reveal">
+        <svg class="annotation-scene-bg" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background -->
+          <rect width="480" height="360" fill="none"/>
+          <!-- Fake slide / content -->
+          <rect x="20" y="20" width="440" height="320" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <!-- Title bar -->
+          <rect x="20" y="20" width="440" height="36" rx="8" fill="rgba(255,255,255,0.05)"/>
+          <circle cx="38" cy="38" r="5" fill="#ff5f57"/>
+          <circle cx="54" cy="38" r="5" fill="#febc2e"/>
+          <circle cx="70" cy="38" r="5" fill="#28c840"/>
+          <text x="100" y="43" font-size="11" fill="#9ca3af" font-family="monospace">design_review.figma</text>
+          <!-- Content blocks -->
+          <rect x="40" y="70" width="180" height="120" rx="6" fill="rgba(255,255,255,0.02)"/>
+          <rect x="260" y="70" width="180" height="120" rx="6" fill="rgba(255,255,255,0.02)"/>
+          <rect x="40" y="210" width="400" height="40" rx="6" fill="rgba(255,255,255,0.05)"/>
+          <rect x="40" y="260" width="280" height="40" rx="6" fill="rgba(255,255,255,0.05)"/>
+          <rect x="340" y="260" width="100" height="40" rx="6" fill="rgba(255,255,255,0.02)"/>
+          <!-- Labels -->
+          <text x="55" y="115" font-size="9" fill="#9ca3af" font-family="sans-serif">Component A</text>
+          <text x="275" y="115" font-size="9" fill="#9ca3af" font-family="sans-serif">Component B</text>
+          <text x="55" y="235" font-size="9" fill="#9ca3af" font-family="sans-serif">Description text goes here...</text>
+        </svg>
+        <!-- Annotation overlay SVG (animated) -->
+        <svg class="annotation-overlay-svg" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+          <!-- Highlight over description line -->
+          <rect class="ann-stroke ann-highlight ann-1" x="40" y="208" width="260" height="12" rx="3" style="--len:600;stroke:rgba(251,191,36,0.4);stroke-width:12;fill:none"/>
+          <!-- Circle around Component A -->
+          <ellipse class="ann-stroke ann-circle ann-2" cx="130" cy="130" rx="95" ry="65" style="--len:520;stroke:#4ade80;stroke-width:2;fill:none"/>
+          <!-- Arrow from Component A to B -->
+          <path class="ann-stroke ann-arrow ann-3" d="M228,130 L252,130" style="--len:28;stroke:#f87171;stroke-width:2;fill:none"/>
+          <path class="ann-stroke ann-arrow ann-3" d="M246,124 L254,130 L246,136" style="--len:22;animation-delay:2.9s;stroke:#f87171;stroke-width:2;fill:none;stroke-linejoin:round;stroke-linecap:round"/>
+          <!-- Handwritten note -->
+          <text class="ann-note ann-4" x="350" y="290" font-size="11" fill="#60a5fa" font-family="cursive" style="animation-delay:3.5s">needs fix!</text>
+        </svg>
+        <style>
+          @keyframes note-appear { from { opacity: 0; } to { opacity: 1; } }
+          .ann-note { opacity: 0; animation: note-appear 0.5s ease forwards; }
+        </style>
+      </div>
+
+      <!-- Text -->
+      <div class="reveal reveal-delay-1">
+        <p class="section-label">Screen Annotation</p>
+        <h2 class="section-title">Draw over<br>anything.</h2>
+        <p class="section-subtitle">
+          MaliPen creates a transparent layer over your entire desktop. Annotate presentations, code, diagrams, or any open window — without interrupting your workflow.
+        </p>
+        <ul class="feature-bullets">
+          <li><span class="bullet-dot"></span><span>Transparent overlay — works on any app</span></li>
+          <li><span class="bullet-dot"></span><span>Instant toggle: annotation mode on/off</span></li>
+          <li><span class="bullet-dot"></span><span>Drawings stay above every window</span></li>
+          <li><span class="bullet-dot"></span><span>One-click clear to reset the canvas</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHITEBOARD / BLACKBOARD SECTION
+     ============================================================ -->
+<section class="section board-section" id="whiteboard">
+  <div class="container">
+    <div class="board-section-header reveal">
+      <p class="section-label" style="text-align:center">Whiteboard &amp; Blackboard</p>
+      <h2 class="section-title" style="text-align:center;max-width:600px;margin:0 auto 16px">From your screen<br>to a full canvas.</h2>
+      <p class="section-subtitle" style="max-width:480px;margin:0 auto;text-align:center">Step away from your desktop and into a dedicated drawing space — in white or black, with fully customizable grid patterns.</p>
+    </div>
+
+    <div class="board-showcase reveal reveal-delay-1">
+      <!-- Whiteboard half -->
+      <div class="board-half whiteboard">
+        <div class="board-half-label">Whiteboard</div>
+        <div class="board-pattern">
+          <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id="wb-grid" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+                <line x1="30" y1="0" x2="30" y2="30" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                <line x1="0" y1="30" x2="30" y2="30" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="300" height="280" fill="url(#wb-grid)"/>
+            <!-- Drawings on whiteboard -->
+            <path d="M40,80 Q80,60 120,80 Q160,100 200,80" stroke="#3b82f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="150" cy="150" r="40" stroke="#ef4444" stroke-width="2.5" fill="none"/>
+            <text x="130" y="155" font-size="14" fill="#374151" font-family="cursive">Hello!</text>
+            <path d="M60,200 L80,185 L100,200 L120,185 L140,200" stroke="#6d28d9" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="board-divider"></div>
+
+      <!-- Blackboard half -->
+      <div class="board-half blackboard">
+        <div class="board-half-label">Blackboard</div>
+        <div class="board-pattern">
+          <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id="bb-dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="12" cy="12" r="1.2" fill="rgba(255,255,255,0.1)"/>
+              </pattern>
+            </defs>
+            <rect width="300" height="280" fill="url(#bb-dots)"/>
+            <!-- Drawings on blackboard -->
+            <path d="M40,80 Q80,60 120,80 Q160,100 200,80" stroke="#60a5fa" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="150" cy="150" r="40" stroke="#f87171" stroke-width="2.5" fill="none"/>
+            <text x="130" y="155" font-size="14" fill="#ffffff" font-family="cursive">Hello!</text>
+            <path d="M60,200 L80,185 L100,200 L120,185 L140,200" stroke="#c084fc" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Pattern panel -->
+      <div class="board-panel" id="boardPanel">
+        <div class="pattern-type-btns">
+          <button class="pattern-btn active" onclick="setPattern('grid',this)">Grid</button>
+          <button class="pattern-btn" onclick="setPattern('dots',this)">Dots</button>
+          <button class="pattern-btn" onclick="setPattern('lines',this)">Lines</button>
+        </div>
+        <div class="slider-row">
+          <span>Spacing</span>
+          <div class="mini-slider"><div class="mini-slider-thumb" style="left:40%"></div></div>
+          <span style="color:var(--text-primary);font-weight:600">10mm</span>
+        </div>
+        <div class="slider-row">
+          <span>Opacity</span>
+          <div class="mini-slider"><div class="mini-slider-thumb" style="left:25%"></div></div>
+          <span style="color:var(--text-primary);font-weight:600">15%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TOOLS BENTO GRID
+     ============================================================ -->
+<section class="section tools-section" id="tools">
+  <div class="container">
+    <div class="tools-section-header reveal">
+      <p class="section-label">Tools</p>
+      <h2 class="section-title">Everything you need<br>to explain anything.</h2>
+    </div>
+
+    <div class="bento-grid">
+
+
+
+      <!-- Pen -->
+      <div class="bento-card card-pen reveal reveal-delay-2">
+        <div class="bento-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+        </div>
+        <div class="bento-viz">
+          <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <path class="bento-pen-stroke" d="M10,45 C30,45 25,15 60,20 C90,24 95,40 130,30 C145,26 148,20 150,15" stroke="#3b82f6" stroke-width="2.5"/>
+            <path class="bento-pen-stroke" d="M10,50 C40,50 50,35 80,38 C105,40 120,50 150,48" stroke="#3b82f6" stroke-width="1.5" style="animation-delay:0.3s"/>
+          </svg>
+        </div>
+        <div class="bento-title">Pen</div>
+        <div class="bento-desc">Smooth, pressure-sensitive strokes with customizable size and opacity.</div>
+      </div>
+
+      <!-- Highlighter -->
+      <div class="bento-card card-highlight reveal reveal-delay-1">
+        <div class="bento-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l-3 9 3-1 1 3 3-9"/><path d="M13 7l4-4 4 4-4 4z"/><path d="M9 11l4-4"/></svg>
+        </div>
+        <div class="bento-viz">
+          <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="8" y="32" font-size="11" fill="#8a8a9a" font-family="sans-serif">The most important thing</text>
+            <text x="8" y="48" font-size="11" fill="#8a8a9a" font-family="sans-serif">to note here is...</text>
+            <rect class="bento-highlight" x="8" y="18" width="144" height="16" rx="2" fill="rgba(251,191,36,0.35)"/>
+          </svg>
+        </div>
+        <div class="bento-title">Highlighter</div>
+        <div class="bento-desc">Semi-transparent color overlays to mark what matters.</div>
+      </div>
+
+      <!-- Laser -->
+      <div class="bento-card card-laser reveal reveal-delay-2">
+        <div class="bento-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+        </div>
+        <div class="bento-viz">
+          <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="laser-glow-grad">
+                <stop offset="0%" stop-color="#ef4444" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path d="M20,50 C40,45 60,35 80,28 C100,21 120,18 140,20" stroke="#ef4444" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.3"/>
+            <path d="M60,35 C80,28 100,21 140,20" stroke="#ef4444" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            <path d="M110,22 C120,19 130,18 140,20" stroke="#ef4444" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle class="bento-laser-dot" cx="140" cy="20" r="4" fill="white"/>
+            <circle cx="140" cy="20" r="8" fill="url(#laser-glow-grad)" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="bento-title">Laser Pointer</div>
+        <div class="bento-desc">Glowing trail that fades naturally — perfect for live presentations.</div>
+      </div>
+
+      <!-- Text -->
+      <div class="bento-card card-text reveal reveal-delay-3">
+        <div class="bento-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+        </div>
+        <div class="bento-viz">
+          <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="10" y="35" font-size="16" fill="#f0f0f2" font-family="sans-serif" font-weight="600">Annotate this</text>
+            <rect x="126" y="22" width="2" height="18" fill="#3b82f6" rx="1">
+              <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+            </rect>
+          </svg>
+        </div>
+        <div class="bento-title">Text Tool</div>
+        <div class="bento-desc">Type anywhere on screen with customizable font, size, and alignment.</div>
+      </div>
+
+      <!-- Shapes -->
+      <div class="bento-card card-shapes reveal reveal-delay-4">
+        <div class="bento-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><circle cx="17.5" cy="6.5" r="3.5"/><polygon points="12 20 16 13 8 13"/></svg>
+        </div>
+        <div class="bento-viz">
+          <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <!-- Rough sketchy shape -->
+            <path class="shape-rough-path" d="M20,18 Q22,12 38,10 Q54,8 58,18 Q62,28 50,32 Q38,36 24,30 Z" stroke="#a78bfa" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <!-- Clean shape -->
+            <rect class="shape-clean-path" x="18" y="10" width="42" height="24" rx="4" stroke="#a78bfa" stroke-width="2" fill="rgba(167,139,250,0.1)"/>
+            <!-- Arrow -->
+            <line x1="70" y1="22" x2="90" y2="22" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/>
+            <path d="M86,18 L92,22 L86,26" stroke="#4ade80" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Clean circle -->
+            <circle cx="120" cy="22" r="18" stroke="#4ade80" stroke-width="2" fill="rgba(74,222,128,0.08)"/>
+          </svg>
+        </div>
+        <div class="bento-title">Shapes &amp; Smart Recognition</div>
+        <div class="bento-desc">Draw rough — MaliPen converts to clean geometric shapes automatically.</div>
+      </div>
+
+      <!-- Eraser -->
+      <div class="bento-card card-eraser reveal reveal-delay-5">
+        <div class="bento-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 20H7L3 16l10-10 7 7-2.5 2.5"/><path d="M6.0 11.0l7 7"/></svg>
+        </div>
+        <div class="bento-viz">
+          <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+            <path class="bento-eraser-stroke" d="M10,35 C30,30 50,40 80,32 C110,24 130,35 150,30" stroke="#6b7280" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <rect x="60" y="20" width="40" height="22" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="68" y="35" font-size="9" fill="#9ca3af" font-family="sans-serif">Eraser</text>
+          </svg>
+        </div>
+        <div class="bento-title">Eraser</div>
+        <div class="bento-desc">Precise pixel eraser or full-stroke eraser — your choice.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     LASER SECTION
+     ============================================================ -->
+<section class="section laser-section" id="laser">
+  <div class="container">
+    <div class="laser-inner">
+      <!-- Text -->
+      <div class="reveal">
+        <p class="section-label">Laser Pointer</p>
+        <h2 class="section-title">Focus attention.<br>Nothing left behind.</h2>
+        <p class="section-subtitle">
+          The laser pointer leaves a glowing trail as you move — then fades naturally, just like a real pointer. Your audience follows your thought, not your cursor.
+        </p>
+        <ul class="feature-bullets" style="margin-top:28px">
+          <li><span class="bullet-dot" style="background:var(--accent-red)"></span><span>Customizable trail duration and fade speed</span></li>
+          <li><span class="bullet-dot" style="background:var(--accent-red)"></span><span>Individual or continuous trail mode</span></li>
+          <li><span class="bullet-dot" style="background:var(--accent-red)"></span><span>Glowing red — impossible to miss</span></li>
+        </ul>
+      </div>
+
+      <!-- Laser stage -->
+      <div class="laser-stage reveal reveal-delay-2">
+        <!-- Slide bg -->
+        <svg class="laser-stage-bg" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="300" fill="none"/>
+          <!-- Fake presentation slide content -->
+          <rect x="20" y="20" width="440" height="260" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <rect x="40" y="44" width="200" height="12" rx="3" fill="rgba(255,255,255,0.05)"/>
+          <rect x="40" y="64" width="140" height="8" rx="3" fill="rgba(255,255,255,0.02)"/>
+          <rect x="40" y="100" width="180" height="80" rx="6" fill="rgba(255,255,255,0.05)"/>
+          <rect x="260" y="100" width="180" height="80" rx="6" fill="rgba(255,255,255,0.05)"/>
+          <rect x="40" y="200" width="400" height="8" rx="3" fill="rgba(255,255,255,0.02)"/>
+          <rect x="40" y="216" width="300" height="8" rx="3" fill="rgba(255,255,255,0.05)"/>
+          <rect x="40" y="232" width="200" height="8" rx="3" fill="rgba(255,255,255,0.05)"/>
+          <text x="56" y="130" font-size="10" fill="#9ca3af" font-family="sans-serif">Chart Area</text>
+          <text x="276" y="130" font-size="10" fill="#9ca3af" font-family="sans-serif">Metrics</text>
+        </svg>
+
+        <!-- Laser trail SVG (static illustration) -->
+        <svg class="laser-trail-svg" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
+          <path class="laser-trail-path laser-trail-3" d="M80,240 C120,220 160,180 220,140 C280,100 340,90 380,100"/>
+          <path class="laser-trail-path laser-trail-2" d="M220,140 C280,100 340,90 380,100"/>
+          <path class="laser-trail-path laser-trail-1" d="M320,94 C345,91 362,95 380,100"/>
+          <circle cx="380" cy="100" r="6" fill="white" style="filter:drop-shadow(0 0 6px white) drop-shadow(0 0 16px #ef4444)">
+            <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SMART WORKFLOW (Selection + Smart Shapes)
+     ============================================================ -->
+<section class="section" id="selection">
+  <div class="container">
+    <div class="board-section-header reveal" style="text-align:center;margin-bottom:52px">
+      <p class="section-label" style="text-align:center">Smart Workflow</p>
+      <h2 class="section-title" style="text-align:center">Draw fast. Think later.</h2>
+      <p class="section-subtitle" style="max-width:480px;margin:0 auto;text-align:center">MaliPen gets out of your way so you can focus on explaining — not on precision.</p>
+    </div>
+    <div class="smart-inner">
+      <!-- Smart Shapes -->
+      <div class="smart-card reveal">
+        <div class="smart-card-viz">
+          <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Rough circle -->
+            <path class="shape-rough-path" d="M30,50 Q35,25 55,18 Q75,10 95,22 Q115,34 118,55 Q120,75 100,88 Q80,100 58,92 Q36,84 28,68 Q22,56 30,50Z" stroke="#a78bfa" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <!-- Clean circle -->
+            <circle class="shape-clean-path" cx="74" cy="54" r="40" stroke="#a78bfa" stroke-width="2" fill="rgba(167,139,250,0.08)"/>
+            <!-- Arrow -->
+            <text class="shape-rough-path" x="135" y="55" font-size="20" fill="#9ca3af" font-family="sans-serif" style="animation:shape-snap 2.5s ease infinite">→</text>
+            <text class="shape-clean-path" x="135" y="55" font-size="20" fill="#4ade80" font-family="sans-serif" style="animation:shape-snap-clean 2.5s ease infinite">→</text>
+            <!-- Rough rect -->
+            <path class="shape-rough-path" d="M165,20 Q175,16 215,18 Q245,19 248,30 Q251,42 248,60 Q246,72 228,76 Q208,80 185,76 Q165,72 163,60 Q160,45 165,20Z" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <!-- Clean rect -->
+            <rect class="shape-clean-path" x="162" y="18" width="90" height="58" rx="6" stroke="#fbbf24" stroke-width="2" fill="rgba(251,191,36,0.07)"/>
+          </svg>
+        </div>
+        <h3 class="smart-card-title">Smart Shape Recognition</h3>
+        <p class="smart-card-desc">Sketch a rough circle or rectangle — MaliPen recognizes your intent and snaps it into a clean geometric shape automatically.</p>
+      </div>
+
+      <!-- Selection -->
+      <div class="smart-card reveal reveal-delay-2">
+        <div class="smart-card-viz">
+          <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Objects -->
+            <circle cx="80" cy="50" r="28" stroke="#a78bfa" stroke-width="2" fill="rgba(167,139,250,0.1)"/>
+            <rect x="150" y="25" width="60" height="50" rx="6" stroke="#4ade80" stroke-width="2" fill="rgba(74,222,128,0.08)"/>
+            <line x1="230" y1="30" x2="300" y2="70" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Lasso around first two -->
+            <path class="lasso-path" d="M38,15 Q80,8 130,15 Q170,20 175,55 Q180,85 130,90 Q80,95 40,85 Q15,78 20,55 Q22,30 38,15Z"/>
+            <!-- Selection handles -->
+            <rect class="selection-handle" x="34" y="11" width="7" height="7" rx="1"/>
+            <rect class="selection-handle" x="169" y="11" width="7" height="7" rx="1"/>
+            <rect class="selection-handle" x="34" y="86" width="7" height="7" rx="1"/>
+            <rect class="selection-handle" x="169" y="86" width="7" height="7" rx="1"/>
+          </svg>
+        </div>
+        <h3 class="smart-card-title">Selection &amp; Transform</h3>
+        <p class="smart-card-desc">Use Lasso or Box select to group drawings, then move, resize, or rotate them freely. Full control over everything you draw.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     USE CASES
+     ============================================================ -->
+<section class="section use-cases-section" id="use-cases">
+  <div class="container">
+    <div class="use-cases-header reveal">
+      <p class="section-label" style="text-align:center">Use Cases</p>
+      <h2 class="section-title" style="text-align:center">Built for how you actually work.</h2>
+    </div>
+
+    <div class="use-cases-tabs reveal reveal-delay-1">
+      <button class="use-tab active" onclick="switchTab('teachers', this)">Teachers</button>
+      <button class="use-tab" onclick="switchTab('presenters', this)">Presenters</button>
+      <button class="use-tab" onclick="switchTab('designers', this)">Designers</button>
+      <button class="use-tab" onclick="switchTab('engineers', this)">Engineers</button>
+    </div>
+
+    <!-- Teachers -->
+    <div class="use-case-scene active" id="tab-teachers">
+      <div class="use-scene-visual">
+        <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="360" fill="none"/>
+          <rect x="0" y="0" width="480" height="44" fill="rgba(255,255,255,0.05)"/>
+          <text x="20" y="28" font-size="13" fill="#9ca3af" font-family="sans-serif">Math 101 — Quadratic Functions</text>
+          <!-- Math content -->
+          <text x="60" y="100" font-size="22" fill="#ffffff" font-family="serif">f(x) = ax² + bx + c</text>
+          <text x="60" y="140" font-size="16" fill="#9ca3af" font-family="serif">where a ≠ 0</text>
+          <!-- Parabola axis -->
+          <line x1="80" y1="320" x2="400" y2="320" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+          <line x1="240" y1="160" x2="240" y2="325" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+          <!-- Parabola path -->
+          <path d="M90,315 Q180,180 240,200 Q300,220 390,315" stroke="#4ade80" stroke-width="2" fill="none"/>
+          <!-- MaliPen annotations -->
+          <ellipse cx="240" cy="200" rx="28" ry="20" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="4 2"/>
+          <text x="272" y="192" font-size="11" fill="#ef4444" font-family="cursive">vertex!</text>
+          <path d="M60,95 L220,95" stroke="rgba(251,191,36,0.5)" stroke-width="12" stroke-linecap="round" opacity="0.6"/>
+          <path d="M310,170 L330,175" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/>
+          <path d="M326,170 L332,175 L326,180" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <text x="335" y="178" font-size="10" fill="#60a5fa" font-family="cursive">opens up</text>
+        </svg>
+      </div>
+      <div>
+        <h3 class="use-scene-title">For Teachers</h3>
+        <p class="use-scene-desc">Explain math, science, and diagrams live — circle key concepts, highlight important formulas, and draw directly on your lesson materials in real time.</p>
+        <div class="use-scene-tags">
+          <span class="use-tag">Live annotation</span>
+          <span class="use-tag">Blackboard mode</span>
+          <span class="use-tag">Highlighter</span>
+          <span class="use-tag">Smart shapes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presenters -->
+    <div class="use-case-scene" id="tab-presenters">
+      <div class="use-scene-visual">
+        <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="360" fill="none"/>
+          <!-- Slide bg -->
+          <rect x="20" y="20" width="440" height="320" rx="10" fill="rgba(255,255,255,0.05)"/>
+          <text x="50" y="80" font-size="20" fill="#ffffff" font-family="sans-serif" font-weight="bold">Q4 Results</text>
+          <text x="50" y="105" font-size="12" fill="#9ca3af" font-family="sans-serif">Revenue · Growth · Forecast</text>
+          <!-- Bar chart -->
+          <rect x="60" y="200" width="40" height="80" rx="3" fill="#3b82f6" opacity="0.7"/>
+          <rect x="120" y="170" width="40" height="110" rx="3" fill="#3b82f6" opacity="0.8"/>
+          <rect x="180" y="145" width="40" height="135" rx="3" fill="#3b82f6"/>
+          <rect x="240" y="125" width="40" height="155" rx="3" fill="#10b981"/>
+          <rect x="300" y="110" width="40" height="170" rx="3" fill="#10b981"/>
+          <line x1="50" y1="290" x2="380" y2="290" stroke="#e5e7eb" stroke-width="1"/>
+          <!-- Annotations -->
+          <path d="M240,120 C260,100 280,95 300,108" stroke="#ef4444" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M295,104 L302,108 L296,113" stroke="#ef4444" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <text x="255" y="92" font-size="11" fill="#ef4444" font-family="cursive">+47% !</text>
+          <!-- Laser dot -->
+          <circle cx="260" cy="150" r="5" fill="white" style="filter:drop-shadow(0 0 8px #ef4444)">
+            <animate attributeName="cx" values="260;280;310;280;260" dur="4s" repeatCount="indefinite"/>
+            <animate attributeName="cy" values="150;140;120;135;150" dur="4s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+      <div>
+        <h3 class="use-scene-title">For Presenters</h3>
+        <p class="use-scene-desc">Guide your audience's attention with the laser pointer, draw arrows to key metrics, and highlight insights live — right on your presentation slides.</p>
+        <div class="use-scene-tags">
+          <span class="use-tag">Laser pointer</span>
+          <span class="use-tag">Screen annotation</span>
+          <span class="use-tag">Arrows &amp; shapes</span>
+          <span class="use-tag">Highlighter</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Designers -->
+    <div class="use-case-scene" id="tab-designers">
+      <div class="use-scene-visual">
+        <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="360" fill="none"/>
+          <!-- Figma-like mockup -->
+          <rect x="20" y="20" width="440" height="320" rx="8" fill="rgba(255,255,255,0.05)"/>
+          <!-- Nav mockup -->
+          <rect x="40" y="40" width="400" height="40" rx="6" fill="rgba(255,255,255,0.02)"/>
+          <rect x="55" y="54" width="60" height="12" rx="3" fill="#9ca3af"/>
+          <rect x="300" y="54" width="50" height="12" rx="6" fill="#3b82f6" opacity="0.8"/>
+          <rect x="365" y="54" width="40" height="12" rx="6" fill="none"/>
+          <!-- Card mockup -->
+          <rect x="40" y="100" width="180" height="120" rx="8" fill="rgba(255,255,255,0.02)"/>
+          <rect x="55" y="116" width="100" height="60" rx="4" fill="#9ca3af"/>
+          <rect x="55" y="184" width="80" height="10" rx="3" fill="#9ca3af"/>
+          <rect x="140" y="184" width="40" height="10" rx="3" fill="rgba(255,255,255,0.05)"/>
+          <!-- Second card -->
+          <rect x="240" y="100" width="180" height="120" rx="8" fill="rgba(255,255,255,0.02)"/>
+          <rect x="255" y="116" width="100" height="60" rx="4" fill="#9ca3af"/>
+          <!-- MaliPen annotations -->
+          <rect x="36" y="96" width="188" height="128" rx="10" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="6 3"/>
+          <text x="40" y="240" font-size="11" fill="#ef4444" font-family="cursive">padding too small</text>
+          <path d="M340" y2="200" x1="380" y1="160" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <circle cx="330" cy="204" r="16" stroke="#fbbf24" stroke-width="2" fill="none"/>
+          <path d="M325,200 L335,200 M330,195 L330,205" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="350" y="156" font-size="10" fill="#fbbf24" font-family="cursive">wrong icon</text>
+        </svg>
+      </div>
+      <div>
+        <h3 class="use-scene-title">For Designers</h3>
+        <p class="use-scene-desc">Review UI designs, mark up feedback directly on screens, and communicate changes precisely — without leaving Figma or your browser.</p>
+        <div class="use-scene-tags">
+          <span class="use-tag">UI annotation</span>
+          <span class="use-tag">Design review</span>
+          <span class="use-tag">Feedback markup</span>
+          <span class="use-tag">Text notes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engineers -->
+    <div class="use-case-scene" id="tab-engineers">
+      <div class="use-scene-visual">
+        <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="360" fill="none"/>
+          <rect x="20" y="20" width="440" height="320" rx="8" fill="rgba(255,255,255,0.05)"/>
+          <!-- Code content -->
+          <text x="40" y="55" font-size="10.5" fill="#9ca3af" font-family="monospace">1</text>
+          <text x="60" y="55" font-size="10.5" fill="#7c3aed" font-family="monospace">function</text>
+          <text x="125" y="55" font-size="10.5" fill="#2563eb" font-family="monospace">calculatePath</text>
+          <text x="240" y="55" font-size="10.5" fill="#ffffff" font-family="monospace">(graph, start, end) {'{'}</text>
+          <text x="40" y="72" font-size="10.5" fill="#9ca3af" font-family="monospace">2</text>
+          <text x="60" y="72" font-size="10.5" fill="#ffffff" font-family="monospace">&nbsp;&nbsp;<text fill="#7c3aed">const</text> visited = <text fill="#2563eb">new</text> Set()</text>
+          <text x="40" y="89" font-size="10.5" fill="#9ca3af" font-family="monospace">3</text>
+          <text x="60" y="89" font-size="10.5" fill="#ffffff" font-family="monospace">&nbsp;&nbsp;<text fill="#7c3aed">const</text> queue = [start]</text>
+          <text x="40" y="106" font-size="10.5" fill="#9ca3af" font-family="monospace">4</text>
+          <text x="60" y="106" font-size="10.5" fill="#ffffff" font-family="monospace">&nbsp;&nbsp;<text fill="#7c3aed">while</text> (queue.length) {'{'}</text>
+          <text x="40" y="123" font-size="10.5" fill="#9ca3af" font-family="monospace">5</text>
+          <text x="60" y="123" font-size="10.5" fill="#ffffff" font-family="monospace">&nbsp;&nbsp;&nbsp;&nbsp;<text fill="#7c3aed">const</text> node = queue.<text fill="#2563eb">shift</text>()</text>
+          <text x="40" y="140" font-size="10.5" fill="#9ca3af" font-family="monospace">6</text>
+          <text x="60" y="140" font-size="10.5" fill="#ffffff" font-family="monospace">&nbsp;&nbsp;&nbsp;&nbsp;<text fill="#7c3aed">if</text> (node === end) <text fill="#7c3aed">return</text> path</text>
+          <!-- Annotations -->
+          <rect x="36" y="116" width="420" height="30" rx="3" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+          <text x="40" y="185" font-size="11" fill="#ef4444" font-family="cursive">BUG: queue.shift() is O(n)</text>
+          <text x="40" y="200" font-size="11" fill="#4ade80" font-family="cursive">→ use a proper queue / deque</text>
+          <path d="M40,168 L200,168" stroke="rgba(251,191,36,0.5)" stroke-width="10" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <h3 class="use-scene-title">For Engineers</h3>
+        <p class="use-scene-desc">Annotate code in code reviews, explain algorithms on your screen, mark bugs directly on the editor — and share the annotated screenshot instantly.</p>
+        <div class="use-scene-tags">
+          <span class="use-tag">Code review</span>
+          <span class="use-tag">Bug marking</span>
+          <span class="use-tag">Algorithm explanation</span>
+          <span class="use-tag">Screenshot capture</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     CUSTOMIZATION
+     ============================================================ -->
+<section class="section custom-section" id="customization">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" style="text-align:center">Customization</p>
+      <h2 class="section-title" style="text-align:center">Make it yours.</h2>
+      <p class="section-subtitle" style="text-align:center;margin:0 auto">Colors, shortcuts, brush sizes — fully personalized to match the way you work.</p>
+    </div>
+    <div class="custom-mockup reveal reveal-delay-2">
+      <div class="custom-mockup-title">MaliPen Settings</div>
+      <div class="custom-row">
+        <span class="custom-row-label">Favorite Colors</span>
+        <div class="color-swatches">
+          <div class="color-swatch" style="background:#ef4444"></div>
+          <div class="color-swatch" style="background:#3b82f6"></div>
+          <div class="color-swatch" style="background:#fbbf24"></div>
+          <div class="color-swatch" style="background:#4ade80"></div>
+          <div class="color-swatch" style="background:#a78bfa"></div>
+          <div class="color-swatch" style="background:#f97316"></div>
+        </div>
+      </div>
+      <div class="custom-row">
+        <span class="custom-row-label">Brush Size</span>
+        <div class="custom-brush-row">
+          <div class="brush-dot" style="width:4px;height:4px"></div>
+          <div class="brush-dot" style="width:7px;height:7px"></div>
+          <div class="brush-dot" style="width:11px;height:11px"></div>
+          <div class="brush-dot" style="width:16px;height:16px"></div>
+          <div class="brush-dot" style="width:22px;height:22px"></div>
+        </div>
+      </div>
+      <div class="custom-row">
+        <span class="custom-row-label">Shortcut: Pen</span>
+        <span class="shortcut-badge">P</span>
+      </div>
+      <div class="custom-row">
+        <span class="custom-row-label">Shortcut: Clear Canvas</span>
+        <span class="shortcut-badge">Ctrl</span>&nbsp;<span class="shortcut-badge">Shift</span>&nbsp;<span class="shortcut-badge">D</span>
+      </div>
+      <div class="custom-row">
+        <span class="custom-row-label">Laser Fade Duration</span>
+        <span style="color:#ffffff;font-size:13px;font-weight:600">1.5 sec</span>
+      </div>
+      <div class="custom-row">
+        <span class="custom-row-label">Toolbar Orientation</span>
+        <span style="color:#ffffff;font-size:13px;font-weight:600">Vertical</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="final-cta" id="download">
+  <div class="container">
+    <h2 class="final-cta-title reveal">Turn your screen<br>into a canvas.</h2>
+    <p class="final-cta-sub reveal reveal-delay-1">MaliPen is free to download. Start annotating in seconds.</p>
+    <div class="final-cta-btns reveal reveal-delay-2">
+      <a href="#" class="btn-primary" style="display:flex; align-items:center; gap:8px;">
+        <svg viewBox="0 0 384 512" width="16" height="16" fill="currentColor">
+          <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+        </svg>
+        <span>Download for macOS</span>
+      </a>
+      <a href="#" class="btn-secondary" style="display:flex; align-items:center; gap:8px;">
+        <svg viewBox="0 0 448 512" width="16" height="16" fill="currentColor">
+          <path d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"/>
+        </svg>
+        <span>Download for Windows</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="#" class="footer-logo">
+        MaliPen
+        <svg class="logo-swoosh" viewBox="0 0 100 20" preserveAspectRatio="none">
+          <path d="M5,15 Q50,0 95,12" stroke="#0ea5e9" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>
+      </a>
+      <span class="footer-copy">© 2026 Mali Yıldırım. All rights reserved.</span>
+      <div class="footer-links" style="display: flex; gap: 8px; align-items: center;">
+        <a href="https://maliyildirimtr.com" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="Website" style="display:flex; justify-content:center; align-items:center; width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,0.05); color:#e4e4e7; transition:all 0.2s;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        </a>
+        <a href="https://www.instagram.com/mali_academy" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="Instagram" style="display:flex; justify-content:center; align-items:center; width:36px; height:36px; border-radius:8px; background:rgba(225,48,108,0.15); color:#f25b90; transition:all 0.2s;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
+        <a href="https://github.com/maliyildirimtr/" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="GitHub" style="display:flex; justify-content:center; align-items:center; width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,0.1); color:#ffffff; transition:all 0.2s;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        </a>
+        <a href="https://academy.maliyildirimtr.com/" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="MaliAcademy" style="display:flex; justify-content:center; align-items:center; width:36px; height:36px; border-radius:8px; background:rgba(59,130,246,0.1); transition:all 0.2s;">
+          <img src="assets/maliacademy.png" alt="MaliAcademy" width="32" height="32" style="object-fit:contain;">
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer-icon-link:hover { transform: scale(1.05); filter: brightness(1.2); }
+</style>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
+<script src="script.js"></script>
+</body>
+</html>
