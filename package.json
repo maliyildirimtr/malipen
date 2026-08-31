@@ -20,7 +20,8 @@
       {
         "provider": "github",
         "owner": "maliyildirimtr",
-        "repo": "MaliPen"
+        "repo": "MaliPen",
+        "releaseType": "release"
       }
     ],
     "directories": {
