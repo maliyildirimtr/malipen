@@ -37,7 +37,8 @@
         "dmg",
         "zip"
       ],
-      "icon": "build/icon.png"
+      "icon": "build/icon.png",
+      "artifactName": "MaliPen-mac.${ext}"
     },
     "dmg": {
       "title": "MaliPen Installer",
@@ -48,7 +49,8 @@
         "nsis",
         "portable"
       ],
-      "icon": "build/icon.png"
+      "icon": "build/icon.png",
+      "artifactName": "MaliPen-windows.${ext}"
     },
     "nsis": {
       "oneClick": false,

@@ -120,6 +120,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ============================================================
+// DYNAMIC GITHUB RELEASE DOWNLOAD LINKS (Direct Downloads)
+// ============================================================
+async function initDownloadLinks() {
+  try {
+    const res = await fetch('https://api.github.com/repos/maliyildirimtr/MaliPen/releases/latest');
+    if (!res.ok) return;
+    const release = await res.json();
+    const assets = release.assets || [];
+    
+    // Find dmg and exe assets
+    const dmgAsset = assets.find(a => a.name.endsWith('.dmg') || a.name.endsWith('.pkg'));
+    const exeAsset = assets.find(a => a.name.endsWith('.exe') || a.name.endsWith('.msi'));
+    
+    if (dmgAsset) {
+      document.querySelectorAll('.download-mac').forEach(el => {
+        el.href = dmgAsset.browser_download_url;
+      });
+    }
+    if (exeAsset) {
+      document.querySelectorAll('.download-win').forEach(el => {
+        el.href = exeAsset.browser_download_url;
+      });
+    }
+  } catch (err) {
+    console.debug('Using fallback static release URLs:', err);
+  }
+}
+
+// ============================================================
 // INIT ON LOAD
 // ============================================================
 window.addEventListener('load', () => {
@@ -128,5 +157,6 @@ window.addEventListener('load', () => {
     el.classList.add('visible');
   });
 
-  
+  // Fetch real download links from GitHub
+  initDownloadLinks();
 });
