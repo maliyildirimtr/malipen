@@ -10,7 +10,7 @@
     "build": "tsc && vite build",
     "dist:mac": "npm run build && electron-builder --mac",
     "dist:win": "npm run build && electron-builder --win --x64",
-    "release": "npm run build && electron-builder",
+    "release": "npm run build && electron-builder --publish always",
     "preview": "vite preview"
   },
   "build": {
