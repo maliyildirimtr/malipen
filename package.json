@@ -45,10 +45,7 @@
       "icon": "build/icon.png"
     },
     "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ],
+      "target": "nsis",
       "icon": "build/icon.png",
       "artifactName": "MaliPen-windows.${ext}"
     },
