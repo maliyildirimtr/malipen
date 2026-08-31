@@ -1,7 +1,7 @@
 {
   "name": "malipen",
   "version": "1.0.0",
-  "repository": "https://github.com/maliy00/MaliPen",
+  "repository": "https://github.com/maliyildirimtr/MaliPen",
   "author": "MaliYildirimTR",
   "description": "Production-quality screen annotation application",
   "main": "dist-electron/main.js",
@@ -19,7 +19,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "maliy00",
+        "owner": "maliyildirimtr",
         "repo": "MaliPen"
       }
     ],
