@@ -1425,79 +1425,532 @@ a {
 }
 
 /* ============================================================
-   RESPONSIVE
+   HAMBURGER + MOBILE MENU
+   ============================================================ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+
+/* X state */
+.hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+.hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile drawer */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(10, 14, 26, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 100px 32px 48px;
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.4s;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mobile-menu.is-open {
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mobile-nav-link {
+  font-size: 22px;
+  font-weight: 600;
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.mobile-nav-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mobile-nav-cta {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 16px 40px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.mobile-nav-cta:hover {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* ============================================================
+   RESPONSIVE — TABLET (≤960px)
    ============================================================ */
 @media (max-width: 960px) {
   :root {
-    /* Exact values from MaliPen toolbar styles */
-    --toolbar-bg: rgba(20, 20, 20, 0.88);
-    --toolbar-border: rgba(255, 255, 255, 0.1);
-    --toolbar-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    --toolbar-radius: 12px;
-    --btn-idle: #a1a1aa;
-    --btn-hover-bg: rgba(255, 255, 255, 0.1);
-    --btn-active-bg: rgba(255, 255, 255, 0.15);
-    --btn-active-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-
-    /* Accent colors */
-    --accent-blue: #2563eb;
-    --accent-red: #dc2626;
-    --accent-yellow: #d97706;
-    --accent-green: #16a34a;
-    --accent-purple: #7c3aed;
-
-    /* Site globals - Light Theme */
-    --bg-base: #ffffff;
-    --bg-surface: #f9fafb;
-    --bg-elevated: #ffffff;
-    --bg-card: #ffffff;
-    --border: #e5e7eb;
-    --border-strong: #d1d5db;
-    --text-primary: #111827;
-    --text-secondary: #4b5563;
-    --text-tertiary: #9ca3af;
-
-    --max-w: 1180px;
-    --section-py: 112px;
+    --section-py: 80px;
   }
 
-  @media (max-width: 600px) {
-    .container {
-      padding: 0 20px;
-    }
+  /* --- Navbar --- */
+  .nav-links {
+    display: none;
+  }
 
-    :root {
-      /* Exact values from MaliPen toolbar styles */
-      --toolbar-bg: rgba(20, 20, 20, 0.88);
-      --toolbar-border: rgba(255, 255, 255, 0.1);
-      --toolbar-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      --toolbar-radius: 12px;
-      --btn-idle: #a1a1aa;
-      --btn-hover-bg: rgba(255, 255, 255, 0.1);
-      --btn-active-bg: rgba(255, 255, 255, 0.15);
-      --btn-active-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  .nav-cta-try {
+    display: none !important;
+  }
 
-      /* Accent colors */
-      --accent-blue: #2563eb;
-      --accent-red: #dc2626;
-      --accent-yellow: #d97706;
-      --accent-green: #16a34a;
-      --accent-purple: #7c3aed;
+  .hamburger {
+    display: flex;
+  }
 
-      /* Site globals - Light Theme */
-      --bg-base: #ffffff;
-      --bg-surface: #f9fafb;
-      --bg-elevated: #ffffff;
-      --bg-card: #ffffff;
-      --border: #e5e7eb;
-      --border-strong: #d1d5db;
-      --text-primary: #111827;
-      --text-secondary: #4b5563;
-      --text-tertiary: #9ca3af;
+  /* --- Hero --- */
+  .hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 48px;
+    padding-bottom: 40px;
+  }
 
-      --max-w: 1180px;
-      --section-py: 112px;
-    }
+  .hero-text {
+    max-width: 100%;
+  }
+
+  .hero-scene {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-toolbar-replica {
+    transform: rotateY(-8deg) rotateX(3deg) scale(1.1);
+  }
+
+  .hero-toolbar-replica:hover {
+    transform: rotateY(0deg) rotateX(0deg) scale(1.15);
+  }
+
+  /* --- Annotation section --- */
+  .annotation-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* --- Board showcase --- */
+  .board-showcase {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1px 1fr;
+    min-height: auto;
+  }
+
+  .board-half {
+    min-height: 220px;
+  }
+
+  .board-panel {
+    position: static;
+    transform: none;
+    margin: 16px auto 0;
+    width: calc(100% - 32px);
+    max-width: 440px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* --- Bento grid: 2 columns --- */
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* --- Laser section --- */
+  .laser-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Move text above visual on tablet */
+  .laser-inner > div:first-child {
+    order: 1;
+  }
+
+  .laser-stage {
+    order: 2;
+  }
+
+  /* --- Smart workflow --- */
+  .smart-inner {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* --- Use cases --- */
+  .use-case-scene.active {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .use-scene-visual {
+    aspect-ratio: 16/9;
+  }
+
+  /* --- Final CTA --- */
+  .final-cta {
+    padding: 80px 0;
+    background-attachment: scroll; /* fixed doesn't work well on mobile */
+  }
+
+  /* --- Footer --- */
+  .footer-inner {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — LARGE PHONE (≤768px)
+   ============================================================ */
+@media (max-width: 768px) {
+  :root {
+    --section-py: 64px;
+  }
+
+  .container {
+    padding: 0 24px;
+  }
+
+  .section-title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+
+  /* --- Hero --- */
+  .hero {
+    min-height: 100svh; /* dynamic viewport height for mobile browsers */
+  }
+
+  .hero .container {
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+
+  .hero-title {
+    font-size: clamp(36px, 9vw, 56px);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    margin-bottom: 32px;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 24px;
+    font-size: 15px;
+  }
+
+  /* --- Sections text alignment --- */
+  .annotation-inner > div:last-child {
+    text-align: left;
+  }
+
+  .section-subtitle {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  /* --- Use cases tabs --- */
+  .use-cases-tabs {
+    gap: 6px;
+  }
+
+  .use-tab {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* --- Use case scene: stack text below visual --- */
+  .use-case-scene.active {
+    grid-template-columns: 1fr;
+  }
+
+  .use-scene-title {
+    font-size: 22px;
+  }
+
+  /* --- Board panel compact --- */
+  .board-panel {
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  .mini-slider {
+    width: 50px;
+  }
+
+  /* --- Final CTA buttons --- */
+  .final-cta-btns {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .final-cta-btns .btn-primary,
+  .final-cta-btns .btn-secondary {
+    width: 100%;
+    max-width: 340px;
+    justify-content: center;
+  }
+
+  /* --- FAQ --- */
+  .faq-list {
+    gap: 12px;
+  }
+
+  .faq-question {
+    font-size: 15px;
+    padding: 18px 20px;
+  }
+
+  .faq-answer {
+    padding: 0 20px;
+    font-size: 14px;
+  }
+
+  .faq-item.active .faq-answer {
+    padding: 0 20px 18px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — PHONE (≤600px)
+   ============================================================ */
+@media (max-width: 600px) {
+  :root {
+    --section-py: 56px;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  /* --- Navbar logo size --- */
+  .nav-logo {
+    font-size: 30px;
+  }
+
+  /* Only Download CTA in nav on small phones */
+  .nav-right .nav-cta:not(.hamburger) {
+    font-size: 13px;
+    padding: 9px 16px;
+  }
+
+  /* --- Hero --- */
+  .hero-title {
+    font-size: clamp(32px, 10vw, 48px);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+  }
+
+  /* --- Annotation --- */
+  .annotation-inner {
+    gap: 28px;
+  }
+
+  /* --- Bento grid: single column --- */
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .bento-card {
+    padding: 20px;
+  }
+
+  .bento-viz {
+    height: 60px;
+    margin-bottom: 14px;
+  }
+
+  /* --- Smart cards --- */
+  .smart-card {
+    padding: 24px 20px;
+  }
+
+  .smart-card-viz {
+    height: 90px;
+    margin-bottom: 16px;
+  }
+
+  .smart-card-title {
+    font-size: 17px;
+  }
+
+  /* --- Section labels / text --- */
+  .section-label {
+    font-size: 10px;
+  }
+
+  .board-section-header {
+    margin-bottom: 32px;
+  }
+
+  /* --- Board showcase on phone: show stacked full width --- */
+  .board-half {
+    min-height: 180px;
+  }
+
+  /* --- Use cases --- */
+  .use-cases-header {
+    margin-bottom: 28px;
+  }
+
+  .use-scene-visual {
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+  }
+
+  /* --- Final CTA --- */
+  .final-cta {
+    padding: 64px 0;
+  }
+
+  .final-cta-title {
+    font-size: clamp(28px, 9vw, 44px);
+  }
+
+  .final-cta-sub {
+    font-size: 15px;
+    margin-bottom: 36px;
+  }
+
+  /* --- FAQ --- */
+  .faq-header {
+    margin-bottom: 36px;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    margin-top: 48px;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — SMALL PHONE (≤400px)
+   ============================================================ */
+@media (max-width: 400px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 10.5vw, 40px);
+  }
+
+  .hero-ctas {
+    gap: 10px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 14px 20px;
+    font-size: 13px;
+  }
+
+  .use-cases-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .use-tab {
+    text-align: center;
+  }
+
+  .mobile-nav-link {
+    font-size: 20px;
   }
 }
 
