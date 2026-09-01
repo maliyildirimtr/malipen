@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="tr" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaliPen Kurulum Kılavuzu – macOS ve Windows Kurulum</title>
+  <meta name="description" content="MaliPen ekran kalemi uygulamasını macOS ve Windows'a nasıl kuracağınızı adım adım öğrenin. Güvenlik uyarılarını ve izin ayarlarını kolayca aşın." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://pen.maliyildirimtr.com/setup.html" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=3" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e1a;
+      --bg2: #0f1423;
+      --bg3: #151b2e;
+      --border: rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.12);
+      --blue: #3b82f6;
+      --blue-dim: rgba(59,130,246,0.15);
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --text: #f1f5f9;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── Top navigation ── */
+    .top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      background: rgba(10,14,26,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      gap: 20px;
+    }
+
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-logo span { color: var(--blue); }
+
+    .nav-back {
+      margin-left: auto;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    /* ── Hero header ── */
+    .hero-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 120px 24px 48px;
+    }
+
+    .hero-header::before {
+      content: '';
+      position: absolute;
+      top: 60px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    /* ── Platform switcher ── */
+    .platform-switcher {
+      display: inline-flex;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text2);
+      transition: all 0.2s;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .platform-btn.active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+    }
+
+    .platform-btn:not(.active):hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+
+    /* ── Main layout ── */
+    .main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── Steps wrapper ── */
+    .steps-container {
+      display: none;
+    }
+    .steps-container.active {
+      display: block;
+    }
+
+    /* ── Step card ── */
+    .step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 2px;
+    }
+
+    .step-body {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .step-body:hover {
+      border-color: var(--border2);
+    }
+
+    .step-header {
+      padding: 18px 22px 14px;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-title .tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .tag-required { background: rgba(239,68,68,0.15); color: var(--red); }
+    .tag-optional { background: rgba(245,158,11,0.12); color: var(--yellow); }
+    .tag-tip      { background: rgba(34,197,94,0.12); color: var(--green); }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── Terminal window ── */
+    .terminal {
+      margin: 0 22px 18px;
+      background: #0d1117;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      background: #161b22;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+
+    .terminal-title {
+      margin-left: 6px;
+      font-size: 11px;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .terminal-body {
+      padding: 16px 18px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 60px;
+    }
+
+    .t-prompt {
+      color: var(--green);
+      user-select: none;
+    }
+
+    .t-cmd {
+      color: #e2e8f0;
+    }
+
+    .t-comment {
+      color: var(--text3);
+      font-size: 12px;
+    }
+
+    .t-out {
+      color: var(--text2);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .t-success {
+      color: var(--green);
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Typewriter cursor */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--blue);
+      margin-left: 1px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ── Visual step (drag to Applications etc.) ── */
+    .visual-step {
+      margin: 0 22px 18px;
+      background: #0d1117;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 22px;
+    }
+
+    .app-drag-demo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 16px;
+    }
+
+    .app-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #3b82f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 12px 28px rgba(59,130,246,0.35);
+      animation: app-float 3s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes app-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .drag-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--text3);
+    }
+
+    .drag-arrow-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, var(--blue), rgba(59,130,246,0.2));
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drag-arrow-shimmer {
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+      animation: shimmer 2s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      to { left: 160%; }
+    }
+
+    .drag-arrowhead {
+      width: 0; height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid var(--blue);
+      margin-top: -14px;
+      margin-left: 60px;
+    }
+
+    .folder-icon {
+      width: 72px;
+      height: 60px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: 4px 12px 12px 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .folder-icon::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: 0;
+      width: 28px; height: 10px;
+      background: #334155;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .folder-label {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* ── Permissions visual ── */
+    .permissions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0 22px 18px;
+    }
+
+    .perm-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.2s;
+    }
+
+    .perm-item:hover {
+      border-color: var(--border2);
+    }
+
+    .perm-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .perm-icon.blue  { background: rgba(59,130,246,0.12); }
+    .perm-icon.green { background: rgba(34,197,94,0.12); }
+    .perm-icon.yellow{ background: rgba(245,158,11,0.12); }
+
+    .perm-label { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .perm-path  { font-size: 12px; color: var(--text2); font-family: var(--mono); }
+
+    /* ── Windows SmartScreen visual ── */
+    .smartscreen-demo {
+      margin: 0 22px 18px;
+      background: #0d1117;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .ss-window {
+      background: #1f2937;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .ss-titlebar {
+      background: #111827;
+      padding: 8px 14px;
+      font-size: 11px;
+      color: var(--text3);
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ss-body {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .ss-shield {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .ss-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .ss-sub {
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+
+    .ss-btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .ss-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .ss-btn.more-info {
+      background: rgba(59,130,246,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(59,130,246,0.3);
+      animation: pulse-btn 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-btn {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.3); }
+      50% { box-shadow: 0 0 0 6px rgba(59,130,246,0); }
+    }
+
+    .ss-btn.run-anyway {
+      background: var(--blue);
+      color: white;
+      display: none;
+    }
+
+    .ss-btn.run-anyway.visible {
+      display: inline-flex;
+    }
+
+    /* ── Download button ── */
+    .download-section {
+      margin-top: 40px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .download-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .download-sub {
+      font-size: 14px;
+      color: var(--text2);
+      margin-bottom: 20px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--blue);
+      color: white;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .download-btn:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59,130,246,0.4);
+    }
+
+    .download-btn:active {
+      transform: translateY(0);
+    }
+
+    .download-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    /* ── Footer ── */
+    .setup-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    /* ── Progress dots ── */
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 32px;
+    }
+
+    .progress-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border2);
+      transition: all 0.3s;
+    }
+
+    .progress-dot.done {
+      background: var(--green);
+      transform: scale(1.3);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .top-nav { padding: 0 18px; }
+      .hero-header { padding: 100px 18px 32px; }
+      .main { padding: 0 16px 60px; }
+      .step { flex-direction: column; gap: 10px; }
+      .step-number { width: 28px; height: 28px; font-size: 11px; }
+      .terminal-body { font-size: 11.5px; padding: 14px; }
+      .app-drag-demo { gap: 12px; }
+      .drag-arrow-line { width: 36px; }
+      .drag-arrowhead { margin-left: 36px; }
+      .platform-btn { padding: 9px 16px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<nav class="top-nav">
+  <a href="/" class="nav-logo">Mali<span>Pen</span></a>
+  <a href="/" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Ana Sayfaya Dön
+  </a>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero-header">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Kurulum Kılavuzu
+  </div>
+  <h1 class="hero-title">MaliPen'i Kur ve Başla</h1>
+  <p class="hero-sub">Platformunu seç, adım adım rehberi takip et — 2 dakikada çizmeye başla.</p>
+
+  <div class="platform-switcher">
+    <button class="platform-btn active" id="btn-mac" onclick="switchPlatform('mac')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      macOS
+    </button>
+    <button class="platform-btn" id="btn-win" onclick="switchPlatform('win')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+      Windows
+    </button>
+  </div>
+</div>
+
+<!-- ── Main ── -->
+<main class="main">
+
+  <!-- ════════════════════════════════════════════
+       MACOS STEPS
+       ════════════════════════════════════════════ -->
+  <div class="steps-container active" id="steps-mac">
+
+    <!-- Step 1: Install -->
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            Uygulamayı Applications'a Taşı
+            <span class="tag tag-required">Zorunlu</span>
+          </div>
+          <div class="step-desc">DMG dosyasını açtıktan sonra MaliPen ikonunu sürükleyerek Applications klasörüne bırak.</div>
+        </div>
+        <!-- Visual: drag to applications -->
+        <div class="visual-step">
+          <div class="app-drag-demo">
+            <div>
+              <div class="app-icon">🖊</div>
+              <div class="folder-label">MaliPen.app</div>
+            </div>
+            <div class="drag-arrow">
+              <div class="drag-arrow-line">
+                <div class="drag-arrow-shimmer"></div>
+              </div>
+              <div class="drag-arrowhead"></div>
+              <div style="font-size:10px; color: var(--text3); margin-top: 4px;">Sürükle</div>
+            </div>
+            <div>
+              <div class="folder-icon">
+                <svg width="32" height="28" viewBox="0 0 24 22" fill="#60a5fa"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="folder-label">Applications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Remove quarantine -->
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            "Doğrulanamıyor" Uyarısını Kaldır
+            <span class="tag tag-required">Zorunlu</span>
+          </div>
+          <div class="step-desc">macOS, Apple Developer hesabı olmayan uygulamalara güvenlik uyarısı gösterir. Terminal'de bir komutla bu kısıtlamayı kaldır.</div>
+        </div>
+        <div class="terminal" id="term-mac-1">
+          <div class="terminal-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="terminal-title">Terminal — zsh</span>
+          </div>
+          <div class="terminal-body" id="term-mac-1-body">
+            <span class="t-prompt">~ $ </span><span class="t-cmd" id="cmd-mac-1"></span><span class="cursor" id="cur-mac-1"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Screen Recording -->
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            Sistem İzinlerini Ver
+            <span class="tag tag-required">Zorunlu</span>
+          </div>
+          <div class="step-desc">MaliPen ekrana çizim yapabilmek için iki sistem izni gerektirir. Bunları bir kez verirsen bir daha sorulmaz.</div>
+        </div>
+        <div class="permissions-list">
+          <div class="perm-item">
+            <div class="perm-icon blue">🎬</div>
+            <div>
+              <div class="perm-label">Ekran Kaydı (Screen Recording)</div>
+              <div class="perm-path">Sistem Tercihleri → Gizlilik ve Güvenlik → Ekran Kaydı → MaliPen ✓</div>
+            </div>
+          </div>
+          <div class="perm-item">
+            <div class="perm-icon green">♿</div>
+            <div>
+              <div class="perm-label">Erişilebilirlik (Accessibility)</div>
+              <div class="perm-path">Sistem Tercihleri → Gizlilik ve Güvenlik → Erişilebilirlik → MaliPen ✓</div>
+            </div>
+          </div>
+        </div>
+        <!-- Terminal for opening preferences -->
+        <div class="terminal" id="term-mac-2">
+          <div class="terminal-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="terminal-title">Terminal — Ayarları hızlı aç</span>
+          </div>
+          <div class="terminal-body" id="term-mac-2-body">
+            <div class="t-comment"># Ekran Kaydı ayarlarını doğrudan aç:</div>
+            <div><span class="t-prompt">~ $ </span><span class="t-cmd" id="cmd-mac-2"></span><span class="cursor" id="cur-mac-2"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Launch -->
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            Uygulamayı Başlat
+            <span class="tag tag-tip">Hazır!</span>
+          </div>
+          <div class="step-desc">Launchpad'den veya Applications klasöründen MaliPen'i aç. Araç çubuğu ekranında belirince çizmeye başlayabilirsin.</div>
+        </div>
+        <div class="terminal" id="term-mac-3">
+          <div class="terminal-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="terminal-title">Terminal — veya terminal ile başlat</span>
+          </div>
+          <div class="terminal-body" id="term-mac-3-body">
+            <div><span class="t-prompt">~ $ </span><span class="t-cmd" id="cmd-mac-3"></span><span class="cursor" id="cur-mac-3"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download button Mac -->
+    <div class="download-section">
+      <div class="download-title">MaliPen'i İndir</div>
+      <div class="download-sub">macOS 12+ • Apple Silicon ve Intel • Ücretsiz</div>
+      <button class="download-btn" id="dl-mac" onclick="startDownload('mac')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        macOS İndir (.dmg)
+      </button>
+      <div class="download-note">İndirme başlamazsa <a href="https://github.com/maliyildirimtr/MaliPen/releases/latest" style="color: var(--blue);">GitHub Releases</a>'e git.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       WINDOWS STEPS
+       ════════════════════════════════════════════ -->
+  <div class="steps-container" id="steps-win">
+
+    <!-- Step 1: SmartScreen -->
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            SmartScreen Uyarısını Geç
+            <span class="tag tag-required">Zorunlu</span>
+          </div>
+          <div class="step-desc">Windows, bilinmeyen yayıncıdan gelen uygulamalara SmartScreen uyarısı gösterir. "Daha fazla bilgi" → "Yine de çalıştır" adımlarını uygula.</div>
+        </div>
+        <div class="smartscreen-demo">
+          <div class="ss-window">
+            <div class="ss-titlebar">
+              Windows Güvenlik
+              <span>✕</span>
+            </div>
+            <div class="ss-body">
+              <div class="ss-shield">🛡️</div>
+              <div class="ss-title">Windows PC'nizi korudu</div>
+              <div class="ss-sub">Microsoft SmartScreen bu uygulamayı tanımıyor.</div>
+              <div class="ss-btn-row">
+                <button class="ss-btn more-info" id="btn-more-info" onclick="showRunAnyway()">Daha fazla bilgi</button>
+                <button class="ss-btn run-anyway" id="btn-run-anyway">Yine de çalıştır ✓</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Installer -->
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            Kurulum Sihirbazını Çalıştır
+            <span class="tag tag-required">Zorunlu</span>
+          </div>
+          <div class="step-desc">EXE dosyasını çalıştır. Kurulum yolunu seçebilirsin — varsayılan olarak <code style="font-family: var(--mono); font-size:12px; color: var(--blue)">%LOCALAPPDATA%\MaliPen</code> kullanılır.</div>
+        </div>
+        <div class="visual-step">
+          <div class="app-drag-demo">
+            <div>
+              <div class="app-icon" style="background: linear-gradient(135deg, #1e3a5f, #1d4ed8);">🖊</div>
+              <div class="folder-label">MaliPen-windows.exe</div>
+            </div>
+            <div class="drag-arrow">
+              <div class="drag-arrow-line">
+                <div class="drag-arrow-shimmer"></div>
+              </div>
+              <div class="drag-arrowhead"></div>
+              <div style="font-size:10px; color: var(--text3); margin-top: 4px;">Çalıştır</div>
+            </div>
+            <div>
+              <div class="folder-icon" style="background: linear-gradient(135deg, #1a2744, #1e3a8a);">
+                <svg width="32" height="28" viewBox="0 0 24 22" fill="#60a5fa"><rect x="3" y="3" width="7" height="7"/><rect x="3" y="12" width="7" height="7"/><rect x="12" y="3" width="7" height="7"/><rect x="12" y="12" width="7" height="7"/></svg>
+              </div>
+              <div class="folder-label">Windows'a Kur</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: PowerShell (opsiyonel) -->
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            Sorun Varsa: PowerShell ile Çalıştır
+            <span class="tag tag-optional">Opsiyonel</span>
+          </div>
+          <div class="step-desc">Uygulama başlamazsa PowerShell'i <strong>Yönetici olarak</strong> aç ve aşağıdaki komutu çalıştır.</div>
+        </div>
+        <div class="terminal" id="term-win-1">
+          <div class="terminal-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="terminal-title">PowerShell (Yönetici)</span>
+          </div>
+          <div class="terminal-body" id="term-win-1-body">
+            <div class="t-comment"># Execution Policy ayarla (bir kez yeter):</div>
+            <div style="margin-top: 6px"><span class="t-prompt" style="color: #60a5fa">PS C:\&gt; </span><span class="t-cmd" id="cmd-win-1"></span><span class="cursor" id="cur-win-1"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: UAC -->
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">
+            UAC İznini Onayla ve Başlat
+            <span class="tag tag-tip">Hazır!</span>
+          </div>
+          <div class="step-desc">MaliPen başlarken UAC (Kullanıcı Hesabı Denetimi) uyarısı çıkabilir. "Evet" seçerek devam et. Güvenlik Duvarı uyarısında ise "Erişime izin ver"i seç.</div>
+        </div>
+        <div class="permissions-list">
+          <div class="perm-item">
+            <div class="perm-icon blue">🔐</div>
+            <div>
+              <div class="perm-label">UAC İzni</div>
+              <div class="perm-path">"Bu uygulamanın değişiklik yapmasına izin vermek istiyor musunuz?" → Evet</div>
+            </div>
+          </div>
+          <div class="perm-item">
+            <div class="perm-icon green">🛡️</div>
+            <div>
+              <div class="perm-label">Windows Güvenlik Duvarı</div>
+              <div class="perm-path">Uyarı çıkarsa → "Erişime izin ver" seç</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download button Win -->
+    <div class="download-section">
+      <div class="download-title">MaliPen'i İndir</div>
+      <div class="download-sub">Windows 10 / 11 • 64-bit • Ücretsiz</div>
+      <button class="download-btn" id="dl-win" onclick="startDownload('win')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+        Windows İndir (.exe)
+      </button>
+      <div class="download-note">İndirme başlamazsa <a href="https://github.com/maliyildirimtr/MaliPen/releases/latest" style="color: var(--blue);">GitHub Releases</a>'e git.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="setup-footer">
+  MaliPen © 2026 Mali Yıldırım &mdash;
+  <a href="https://github.com/maliyildirimtr/MaliPen" style="color: var(--blue);">GitHub</a> &mdash;
+  <a href="/" style="color: var(--text3)">Ana Sayfa</a>
+</footer>
+
+<script>
+'use strict';
+
+// ── Platform switch ──────────────────────────────────────────────
+function switchPlatform(platform) {
+  document.getElementById('steps-mac').classList.toggle('active', platform === 'mac');
+  document.getElementById('steps-win').classList.toggle('active', platform === 'win');
+  document.getElementById('btn-mac').classList.toggle('active', platform === 'mac');
+  document.getElementById('btn-win').classList.toggle('active', platform === 'win');
+
+  // Re-run animations for the new platform
+  resetAndAnimate(platform);
+}
+
+// ── Auto-detect platform (URL param takes priority) ─────────────
+(function autoDetect() {
+  const params = new URLSearchParams(window.location.search);
+  const param = params.get('platform'); // 'mac' | 'win' | null
+  const ua = navigator.userAgent.toLowerCase();
+  const platform = param || (ua.includes('win') ? 'win' : 'mac');
+
+  document.getElementById('steps-mac').classList.toggle('active', platform === 'mac');
+  document.getElementById('steps-win').classList.toggle('active', platform === 'win');
+  document.getElementById('btn-mac').classList.toggle('active', platform === 'mac');
+  document.getElementById('btn-win').classList.toggle('active', platform === 'win');
+})();
+
+// ── Typewriter ───────────────────────────────────────────────────
+function typewrite(targetId, cursorId, text, delay, speed, onDone) {
+  const el = document.getElementById(targetId);
+  const cur = document.getElementById(cursorId);
+  if (!el) return;
+  el.textContent = '';
+  let i = 0;
+  setTimeout(() => {
+    if (cur) cur.style.display = 'inline-block';
+    const iv = setInterval(() => {
+      el.textContent += text[i++];
+      if (i >= text.length) {
+        clearInterval(iv);
+        if (onDone) setTimeout(onDone, 500);
+      }
+    }, speed);
+  }, delay);
+}
+
+// ── Reveal steps ─────────────────────────────────────────────────
+function revealSteps(container) {
+  const steps = container.querySelectorAll('.step');
+  steps.forEach((step, i) => {
+    step.classList.remove('visible');
+    setTimeout(() => step.classList.add('visible'), 100 + i * 180);
+  });
+}
+
+// ── Mac terminal animations ───────────────────────────────────────
+function runMacAnims() {
+  // Term 1 — xattr
+  typewrite('cmd-mac-1', 'cur-mac-1',
+    'xattr -cr /Applications/MaliPen.app', 400, 42, () => {
+      const body = document.getElementById('term-mac-1-body');
+      if (!body) return;
+      const out = document.createElement('span');
+      out.className = 't-success';
+      out.textContent = '✓ Quarantine attribute removed';
+      body.appendChild(out);
+      const cursor = document.getElementById('cur-mac-1');
+      if (cursor) cursor.style.display = 'none';
+    });
+
+  // Term 2 — open prefs
+  typewrite('cmd-mac-2', 'cur-mac-2',
+    'open "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"',
+    800, 24, null);
+
+  // Term 3 — launch
+  typewrite('cmd-mac-3', 'cur-mac-3',
+    'open /Applications/MaliPen.app', 1200, 48, () => {
+      const body = document.getElementById('term-mac-3-body');
+      if (!body) return;
+      const out = document.createElement('span');
+      out.className = 't-success';
+      out.textContent = '✓ MaliPen launched!';
+      body.appendChild(out);
+    });
+}
+
+// ── Win terminal animations ───────────────────────────────────────
+function runWinAnims() {
+  typewrite('cmd-win-1', 'cur-win-1',
+    'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser', 400, 32, () => {
+      const body = document.getElementById('term-win-1-body');
+      if (!body) return;
+      const out = document.createElement('span');
+      out.className = 't-success';
+      out.textContent = '✓ Execution policy updated.';
+      body.appendChild(out);
+      const cursor = document.getElementById('cur-win-1');
+      if (cursor) cursor.style.display = 'none';
+    });
+}
+
+// ── Reset & re-animate on platform switch ────────────────────────
+function resetAndAnimate(platform) {
+  const container = document.getElementById(`steps-${platform}`);
+  if (!container) return;
+
+  // Reset typewriter targets
+  ['cmd-mac-1','cmd-mac-2','cmd-mac-3','cmd-win-1'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '';
+  });
+  // Remove added output lines
+  ['term-mac-1-body','term-mac-3-body','term-win-1-body'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const extras = el.querySelectorAll('.t-success, .t-out');
+      extras.forEach(e => e.remove());
+    }
+  });
+
+  revealSteps(container);
+  if (platform === 'mac') runMacAnims();
+  else runWinAnims();
+}
+
+// ── SmartScreen demo ──────────────────────────────────────────────
+function showRunAnyway() {
+  const moreInfo = document.getElementById('btn-more-info');
+  const runAnyway = document.getElementById('btn-run-anyway');
+  if (moreInfo) moreInfo.style.opacity = '0.4';
+  if (runAnyway) runAnyway.classList.add('visible');
+}
+
+// ── Download ──────────────────────────────────────────────────────
+const RELEASE_BASE = 'https://github.com/maliyildirimtr/MaliPen/releases/latest/download';
+let resolvedMac = `${RELEASE_BASE}/MaliPen-mac.dmg`;
+let resolvedWin = `${RELEASE_BASE}/MaliPen-windows.exe`;
+
+async function fetchReleaseLinks() {
+  try {
+    const res = await fetch('https://api.github.com/repos/maliyildirimtr/MaliPen/releases/latest');
+    if (!res.ok) return;
+    const data = await res.json();
+    const assets = data.assets || [];
+    const dmg = assets.find(a => a.name.endsWith('.dmg'));
+    const exe = assets.find(a => a.name.endsWith('.exe') || a.name.endsWith('.msi'));
+    if (dmg) resolvedMac = dmg.browser_download_url;
+    if (exe) resolvedWin = exe.browser_download_url;
+  } catch (_) {}
+}
+
+function startDownload(platform) {
+  const url = platform === 'mac' ? resolvedMac : resolvedWin;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  fetchReleaseLinks();
+
+  // Determine active platform
+  const isMac = document.getElementById('btn-mac').classList.contains('active');
+  const platform = isMac ? 'mac' : 'win';
+
+  const container = document.getElementById(`steps-${platform}`);
+  revealSteps(container);
+  if (platform === 'mac') runMacAnims();
+  else runWinAnims();
+});
+</script>
+</body>
+</html>
