@@ -1498,8 +1498,10 @@ a {
       --max-w: 1180px;
       --section-py: 112px;
     }
+  }
+}
 
-    /* ============================================================
+/* ============================================================
    UTILITIES
    ============================================================ */
     .glow-blue {
@@ -1574,22 +1576,22 @@ a {
 }
 
 .faq-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
   transition: all 0.25s ease;
 }
 
 .faq-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(59, 130, 246, 0.3);
+  background: var(--bg-surface);
+  border-color: var(--border-strong);
 }
 
 .faq-item.active {
-  border-color: rgba(59, 130, 246, 0.5);
-  background: rgba(15, 23, 42, 0.6);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent-blue);
+  background: var(--bg-elevated);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .faq-question {
@@ -1600,7 +1602,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
@@ -1614,7 +1616,7 @@ a {
   height: 20px;
   transition: transform 0.3s ease;
   flex-shrink: 0;
-  color: #60a5fa;
+  color: var(--accent-blue);
 }
 
 .faq-item.active .faq-icon {
@@ -1626,7 +1628,7 @@ a {
   overflow: hidden;
   transition: max-height 0.35s ease, padding 0.35s ease;
   padding: 0 24px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.65;
 }
