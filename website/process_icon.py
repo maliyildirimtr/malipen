@@ -5,13 +5,11 @@ def create_circular_icon(input_path, output_dir):
     # Open image and convert to RGBA
     img = Image.open(input_path).convert("RGBA")
     
+    # Crop the black padding (based on the provided image dimensions)
+    img = img.crop((58, 60, 966, 968))
+    
     # Ensure it's square
     size = min(img.size)
-    left = (img.width - size) / 2
-    top = (img.height - size) / 2
-    right = (img.width + size) / 2
-    bottom = (img.height + size) / 2
-    img = img.crop((left, top, right, bottom))
     
     # Create antialiased mask
     # We draw at 4x scale then downsample for smooth edges
