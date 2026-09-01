@@ -26,16 +26,16 @@ def create_circular_icon(input_path, output_dir):
     img.putalpha(mask)
     
     # Save base PNG
-    base_png = os.path.join(output_dir, "icon.png")
+    base_png = os.path.join(output_dir, "app-icon.png")
     img.save(base_png, "PNG")
     
     # Define sizes
     sizes = {
-        'favicon-16x16.png': 16,
-        'favicon-32x32.png': 32,
-        'apple-touch-icon.png': 180,
-        'android-chrome-192x192.png': 192,
-        'android-chrome-512x512.png': 512,
+        'app-favicon-16x16.png': 16,
+        'app-favicon-32x32.png': 32,
+        'app-apple-touch-icon.png': 180,
+        'app-android-chrome-192x192.png': 192,
+        'app-android-chrome-512x512.png': 512,
     }
     
     for filename, sz in sizes.items():
@@ -43,7 +43,7 @@ def create_circular_icon(input_path, output_dir):
         resized.save(os.path.join(output_dir, filename), "PNG")
         
     # Generate ICO file containing multiple sizes
-    ico_path = os.path.join(output_dir, "favicon.ico")
+    ico_path = os.path.join(output_dir, "app-favicon.ico")
     icon_sizes = [(16, 16), (32, 32), (48, 48), (64, 64)]
     img.save(ico_path, format="ICO", sizes=icon_sizes)
     print("Icons generated successfully in", output_dir)
