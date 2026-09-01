@@ -19,7 +19,9 @@ def create_circular_icon(input_path, output_dir):
     mask_size = size * scale
     mask = Image.new('L', (mask_size, mask_size), 0)
     draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0, mask_size, mask_size), fill=255)
+    # Use rounded rectangle with radius 22% of the size
+    radius = int(mask_size * 0.225)
+    draw.rounded_rectangle((0, 0, mask_size, mask_size), radius=radius, fill=255)
     mask = mask.resize((size, size), Image.Resampling.LANCZOS)
     
     # Apply mask
