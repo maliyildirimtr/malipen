@@ -240,7 +240,12 @@ export function App() {
     }
   };
 
+  const lastColorRef = useRef<string | null>(null);
+
   const setCurrentColor = (color: string) => {
+    if (currentColor !== color) {
+      lastColorRef.current = currentColor;
+    }
     if (currentTool === 'highlighter') {
       setHighlighterColor(color);
       const newSettings = { ...settings, highlighterColor: color };
@@ -457,6 +462,8 @@ export function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
        if (showPrivacyPolicy) return;
+       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
        const s = settings.shortcuts;
        
        // Sadece Ayarlar (Settings) ve Araç Çubuğu kısayollarına her zaman izin ver, 
@@ -505,7 +512,9 @@ export function App() {
           updateBrushSize(Math.max(1, currentWidth - 2))
        }
        else if (matchesShortcut(e, s.changeToLastColor)) {
-          // Todo: history mechanism. For now do nothing or fallback
+          if (lastColorRef.current) {
+            setCurrentColor(lastColorRef.current);
+          }
        }
        else if (matchesShortcut(e, s.screenshot)) {
           handleCaptureStart(settings.captureFullDesktop ? 'full' : 'region');
