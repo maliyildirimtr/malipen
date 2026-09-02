@@ -39,6 +39,24 @@ export interface Stroke {
   imageUrl?: string;
 }
 
+export const getToolCursor = (tool: Tool) => {
+  if (tool === 'select') return 'pointer';
+  if (tool === 'text') return 'text';
+  if (tool === 'pen') {
+    return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' filter='drop-shadow(0px 1px 2px rgba(0,0,0,0.8))'%3E%3Cpath d='M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z'/%3E%3Cpath d='m15 5 4 4'/%3E%3C/svg%3E") 2 22, crosshair`;
+  }
+  if (tool === 'highlighter') {
+    return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' filter='drop-shadow(0px 1px 2px rgba(0,0,0,0.8))'%3E%3Cpath d='m9 11-6 6v3h9l3-3'/%3E%3Cpath d='m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4'/%3E%3C/svg%3E") 3 20, crosshair`;
+  }
+  if (tool === 'eraser') {
+    return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' filter='drop-shadow(0px 1px 2px rgba(0,0,0,0.8))'%3E%3Cpath d='m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21'/%3E%3Cpath d='M22 21H7'/%3E%3Cpath d='m5 11 9 9'/%3E%3C/svg%3E") 4 20, crosshair`;
+  }
+  if (tool === 'laser') {
+    return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='red' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' filter='drop-shadow(0px 0px 4px rgba(255,0,0,0.8))'%3E%3Ccircle cx='12' cy='12' r='4' fill='red'/%3E%3C/svg%3E") 12 12, crosshair`;
+  }
+  return 'crosshair';
+};
+
 export interface DrawingCanvasProps {
   isAnnotationMode: boolean;
   tool: Tool;
@@ -1605,7 +1623,7 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(({
           position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
           pointerEvents: isAnnotationMode ? 'auto' : 'none',
           zIndex: 10, touchAction: 'none',
-          cursor: tool === 'select' ? 'pointer' : (tool === 'text' ? 'text' : 'crosshair')
+          cursor: getToolCursor(tool)
         }}
       />
       {activeTextEdit && activeTextEdit.stroke.textFormat && (
