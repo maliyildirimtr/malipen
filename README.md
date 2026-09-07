@@ -1,7 +1,7 @@
 # MaliPen 🎨
 
 <div align="center">
-  <img src="website/assets/icon.png" width="128" height="128" alt="MaliPen Logo" style="border-radius: 28px;" />
+  <img src="website/assets/app-android-chrome-192x192.png" width="128" height="128" alt="MaliPen Logo" style="border-radius: 28px;" />
   <h3>Your Screen. Your Canvas.</h3>
   <p>Production-quality screen annotation, drawing, and presentation tool for macOS & Windows.</p>
 
