@@ -1,6 +1,6 @@
 {
   "name": "malipen",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": "https://github.com/maliyildirimtr/MaliPen",
   "author": "MaliYildirimTR",
   "description": "Production-quality screen annotation application",
@@ -14,7 +14,7 @@
     "preview": "vite preview"
   },
   "build": {
-    "appId": "com.tankstudios.malipen",
+    "appId": "com.maliyildirimtr.malipen",
     "productName": "MaliPen",
     "publish": [
       {
@@ -38,8 +38,12 @@
         "dmg",
         "zip"
       ],
-      "icon": "build/icon.png",
-      "artifactName": "MaliPen-mac.${ext}"
+      "icon": "build/icon.icns",
+      "artifactName": "MaliPen-mac.${ext}",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "notarize": true
     },
     "dmg": {
       "title": "MaliPen Installer",
