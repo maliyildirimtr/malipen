@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,4 +28,4 @@ jobs:
       - name: Build and Publish Windows Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run build && electron-builder --win --x64 --publish always
+        run: npm run build && npx --no-install electron-builder --win --x64 --publish always
