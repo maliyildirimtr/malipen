@@ -63,7 +63,7 @@
     "appx": {
       "identityName": "MehmetAliYldrm.MaliPen",
       "publisher": "CN=91E39BFD-90E8-4CA1-B4FE-3DAAC4FC4492",
-      "publisherDisplayName": "Mehmet Ali Yildirim",
+      "publisherDisplayName": "Mehmet Ali YILDIRIM",
       "displayName": "MaliPen",
       "applicationId": "MaliPen",
       "artifactName": "MaliPen-Store-${version}-${arch}.${ext}"
