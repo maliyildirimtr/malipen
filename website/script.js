@@ -154,7 +154,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ============================================================
-// DYNAMIC GITHUB RELEASE DOWNLOAD LINKS (Direct Downloads)
+// DYNAMIC GITHUB RELEASE DOWNLOAD LINK (macOS Direct Download)
 // ============================================================
 async function initDownloadLinks() {
   try {
@@ -163,18 +163,13 @@ async function initDownloadLinks() {
     const release = await res.json();
     const assets = release.assets || [];
     
-    // Find dmg and exe assets
+    // Windows downloads use the Microsoft Store URL defined in the HTML.
+    // Only resolve the latest direct-download asset for macOS here.
     const dmgAsset = assets.find(a => a.name.endsWith('.dmg') || a.name.endsWith('.pkg'));
-    const exeAsset = assets.find(a => a.name.endsWith('.exe') || a.name.endsWith('.msi'));
     
     if (dmgAsset) {
       document.querySelectorAll('.download-mac').forEach(el => {
         el.href = dmgAsset.browser_download_url;
-      });
-    }
-    if (exeAsset) {
-      document.querySelectorAll('.download-win').forEach(el => {
-        el.href = exeAsset.browser_download_url;
       });
     }
   } catch (err) {
