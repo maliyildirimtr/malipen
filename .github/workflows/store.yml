@@ -1,0 +1,67 @@
+name: Microsoft Store package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["codex/microsoft-store-appx"]
+    paths:
+      - package.json
+      - .github/workflows/store.yml
+
+permissions:
+  contents: read
+
+jobs:
+  appx:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build x64 AppX
+        run: npm run dist:store
+
+      - name: Validate AppX manifest
+        shell: pwsh
+        run: |
+          $package = Get-ChildItem release/MaliPen-Store-*-x64.appx | Select-Object -First 1
+          if (-not $package) { throw "AppX package was not created." }
+
+          $extractDir = Join-Path $env:RUNNER_TEMP "malipen-appx"
+          [System.IO.Compression.ZipFile]::ExtractToDirectory($package.FullName, $extractDir)
+          [xml]$manifest = Get-Content (Join-Path $extractDir "AppxManifest.xml")
+
+          $identity = $manifest.Package.Identity
+          $publisherDisplayName = $manifest.Package.Properties.PublisherDisplayName
+          $application = $manifest.Package.Applications.Application
+          $deviceFamily = $manifest.Package.Dependencies.TargetDeviceFamily
+
+          if ($identity.Name -ne "MehmetAliYldrm.MaliPen") { throw "Unexpected Identity.Name: $($identity.Name)" }
+          if ($identity.Publisher -ne "CN=91E39BFD-90E8-4CA1-B4FE-3DAAC4FC4492") { throw "Unexpected Identity.Publisher: $($identity.Publisher)" }
+          if ($identity.ProcessorArchitecture -ne "x64") { throw "Unexpected architecture: $($identity.ProcessorArchitecture)" }
+          if ($publisherDisplayName -ne "Mehmet Ali Yildirim") { throw "Unexpected PublisherDisplayName: $publisherDisplayName" }
+          if ($application.Id -ne "MaliPen") { throw "Unexpected Application.Id: $($application.Id)" }
+          if ($deviceFamily.Name -ne "Windows.Desktop") { throw "Unexpected device family: $($deviceFamily.Name)" }
+
+          Copy-Item (Join-Path $extractDir "AppxManifest.xml") release/AppxManifest.xml
+          Write-Host "Validated $($package.Name)"
+
+      - name: Upload Store package
+        uses: actions/upload-artifact@v4
+        with:
+          name: MaliPen-Microsoft-Store-x64
+          path: |
+            release/MaliPen-Store-*-x64.appx
+            release/AppxManifest.xml
+          if-no-files-found: error
+          retention-days: 14

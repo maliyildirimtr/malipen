@@ -10,6 +10,7 @@
     "build": "tsc && vite build",
     "dist:mac": "npm run build && electron-builder --mac",
     "dist:win": "npm run build && electron-builder --win --x64",
+    "dist:store": "npm run build && electron-builder --win appx --x64 --publish never",
     "release": "npm run build && electron-builder --publish always",
     "preview": "vite preview"
   },
@@ -58,6 +59,14 @@
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "appx": {
+      "identityName": "MehmetAliYldrm.MaliPen",
+      "publisher": "CN=91E39BFD-90E8-4CA1-B4FE-3DAAC4FC4492",
+      "publisherDisplayName": "Mehmet Ali Yildirim",
+      "displayName": "MaliPen",
+      "applicationId": "MaliPen",
+      "artifactName": "MaliPen-Store-${version}-${arch}.${ext}"
     }
   },
   "dependencies": {
