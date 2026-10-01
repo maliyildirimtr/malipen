@@ -1020,6 +1020,65 @@
 </section>
 
 <!-- ============================================================
+     SITE MAP FOOTER NAV
+     ============================================================ -->
+<section class="sitemap-nav" aria-label="Site Map">
+  <div class="container">
+    <nav class="sitemap-grid">
+
+      <!-- Column 1: Product -->
+      <div class="sitemap-col">
+        <h3 class="sitemap-col-title">MaliPen</h3>
+        <ul class="sitemap-links">
+          <li><a href="#features">Screen Annotation</a></li>
+          <li><a href="#whiteboard">Whiteboard &amp; Blackboard</a></li>
+          <li><a href="#tools">Drawing Tools</a></li>
+          <li><a href="#laser">Laser Pointer</a></li>
+          <li><a href="#selection">Smart Shapes</a></li>
+          <li><a href="#customization">Customization</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 2: Use Cases -->
+      <div class="sitemap-col">
+        <h3 class="sitemap-col-title">Use Cases</h3>
+        <ul class="sitemap-links">
+          <li><a href="#use-cases">For Teachers</a></li>
+          <li><a href="#use-cases">For Presenters</a></li>
+          <li><a href="#use-cases">For Designers</a></li>
+          <li><a href="#use-cases">For Engineers</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Download -->
+      <div class="sitemap-col">
+        <h3 class="sitemap-col-title">Download</h3>
+        <ul class="sitemap-links">
+          <li><a href="https://github.com/maliyildirimtr/MaliPen/releases/latest/download/MaliPen-mac.dmg" rel="noopener">MaliPen for macOS</a></li>
+          <li><a href="https://apps.microsoft.com/detail/9NQ52H0BKLH1" target="_blank" rel="noopener noreferrer">MaliPen for Windows</a></li>
+          <li><a href="https://github.com/maliyildirimtr/MaliPen" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+          <li><a href="/sitemap.html">Site Map</a></li>
+          <li><a href="/sitemap.xml">sitemap.xml</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: About -->
+      <div class="sitemap-col">
+        <h3 class="sitemap-col-title">About</h3>
+        <ul class="sitemap-links">
+          <li><a href="https://maliyildirimtr.com" target="_blank" rel="noopener noreferrer">Mali Yıldırım</a></li>
+          <li><a href="https://academy.maliyildirimtr.com/" target="_blank" rel="noopener noreferrer">MaliAcademy</a></li>
+          <li><a href="https://www.instagram.com/mali_academy" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+    </nav>
+  </div>
+</section>
+
+<!-- ============================================================
      FOOTER
      ============================================================ -->
 <footer class="footer">
@@ -1053,6 +1112,51 @@
 
 <style>
 .footer-icon-link:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+/* ── Sitemap Nav ── */
+.sitemap-nav {
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 52px 0 44px;
+}
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px 32px;
+}
+@media (max-width: 768px) {
+  .sitemap-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
+}
+@media (max-width: 480px) {
+  .sitemap-grid { grid-template-columns: 1fr 1fr; gap: 28px 16px; }
+}
+.sitemap-col-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin: 0 0 16px 0;
+}
+.sitemap-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sitemap-links a {
+  font-size: 13.5px;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.18s;
+  line-height: 1.4;
+}
+.sitemap-links a:hover {
+  color: #e4e4e7;
+}
 </style>
 
 <script src="https://unpkg.com/lucide@latest"></script>

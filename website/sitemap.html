@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Map – MaliPen Screen Annotation Tool</title>
+  <meta name="description" content="Full site map of MaliPen — screen annotation and drawing tool for Mac and Windows. Browse all features, use cases, downloads, and pages." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://pen.maliyildirimtr.com/sitemap.html" />
+  <link rel="icon" type="image/x-icon" href="assets/app-favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.07);
+      --text-primary: #f4f4f5;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent: #0ea5e9;
+      --accent-soft: rgba(14,165,233,0.12);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+    }
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-back {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.18s;
+    }
+    .nav-back:hover { color: var(--text-primary); }
+
+    /* ── Container ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 520px;
+    }
+
+    /* ── Sitemap grid ── */
+    .sitemap-body {
+      padding: 56px 0 80px;
+    }
+    .sitemap-section {
+      margin-bottom: 52px;
+    }
+    .sitemap-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sitemap-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .sitemap-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      text-decoration: none;
+      transition: border-color 0.18s, background 0.18s;
+      display: block;
+    }
+    .sitemap-item:hover {
+      border-color: rgba(14,165,233,0.35);
+      background: rgba(14,165,233,0.05);
+    }
+    .sitemap-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .sitemap-item-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .sitemap-item-url {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--accent);
+      font-family: monospace;
+      opacity: 0.7;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
+    }
+    .page-footer p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .page-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .page-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="container">
+    <a href="/" class="nav-logo">Mali<span>Pen</span></a>
+    <a href="/" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Home
+    </a>
+  </div>
+</nav>
+
+<!-- Header -->
+<header class="page-header">
+  <div class="container">
+    <span class="page-tag">Site Map</span>
+    <h1 class="page-title">Everything on MaliPen</h1>
+    <p class="page-subtitle">A complete map of all pages, sections, and features available on pen.maliyildirimtr.com.</p>
+  </div>
+</header>
+
+<!-- Sitemap Body -->
+<main class="sitemap-body">
+  <div class="container">
+
+    <!-- Pages -->
+    <section class="sitemap-section">
+      <h2 class="sitemap-section-title">Pages</h2>
+      <div class="sitemap-items">
+
+        <a href="/" class="sitemap-item">
+          <div class="sitemap-item-title">Home</div>
+          <div class="sitemap-item-desc">Main landing page — screen annotation tool overview, features, use cases, and downloads.</div>
+          <span class="sitemap-item-url">pen.maliyildirimtr.com/</span>
+        </a>
+
+        <a href="/privacy" class="sitemap-item">
+          <div class="sitemap-item-title">Privacy Policy</div>
+          <div class="sitemap-item-desc">How MaliPen handles user data and privacy.</div>
+          <span class="sitemap-item-url">pen.maliyildirimtr.com/privacy</span>
+        </a>
+
+        <a href="/sitemap.html" class="sitemap-item">
+          <div class="sitemap-item-title">Site Map (this page)</div>
+          <div class="sitemap-item-desc">Human-readable HTML sitemap for navigating all content.</div>
+          <span class="sitemap-item-url">pen.maliyildirimtr.com/sitemap.html</span>
+        </a>
+
+        <a href="/sitemap.xml" class="sitemap-item">
+          <div class="sitemap-item-title">XML Sitemap</div>
+          <div class="sitemap-item-desc">Machine-readable sitemap.xml for search engine crawlers.</div>
+          <span class="sitemap-item-url">pen.maliyildirimtr.com/sitemap.xml</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Features / Sections -->
+    <section class="sitemap-section">
+      <h2 class="sitemap-section-title">Features &amp; Sections</h2>
+      <div class="sitemap-items">
+
+        <a href="/#features" class="sitemap-item">
+          <div class="sitemap-item-title">Screen Annotation</div>
+          <div class="sitemap-item-desc">Transparent overlay that lets you draw on screen over any app, video, or document.</div>
+          <span class="sitemap-item-url">/#features</span>
+        </a>
+
+        <a href="/#whiteboard" class="sitemap-item">
+          <div class="sitemap-item-title">Whiteboard &amp; Blackboard</div>
+          <div class="sitemap-item-desc">Full-canvas whiteboard and blackboard modes with customizable grid patterns.</div>
+          <span class="sitemap-item-url">/#whiteboard</span>
+        </a>
+
+        <a href="/#tools" class="sitemap-item">
+          <div class="sitemap-item-title">Drawing Tools</div>
+          <div class="sitemap-item-desc">Pen, highlighter, laser pointer, text tool, shapes, and eraser.</div>
+          <span class="sitemap-item-url">/#tools</span>
+        </a>
+
+        <a href="/#laser" class="sitemap-item">
+          <div class="sitemap-item-title">Laser Pointer</div>
+          <div class="sitemap-item-desc">Glowing trail that fades naturally — perfect for live presentations.</div>
+          <span class="sitemap-item-url">/#laser</span>
+        </a>
+
+        <a href="/#selection" class="sitemap-item">
+          <div class="sitemap-item-title">Smart Shape Recognition</div>
+          <div class="sitemap-item-desc">Draw rough shapes — MaliPen snaps them to clean geometric forms automatically.</div>
+          <span class="sitemap-item-url">/#selection</span>
+        </a>
+
+        <a href="/#customization" class="sitemap-item">
+          <div class="sitemap-item-title">Customization</div>
+          <div class="sitemap-item-desc">Colors, keyboard shortcuts, brush sizes, laser fade duration — fully personalized.</div>
+          <span class="sitemap-item-url">/#customization</span>
+        </a>
+
+        <a href="/#faq" class="sitemap-item">
+          <div class="sitemap-item-title">FAQ</div>
+          <div class="sitemap-item-desc">Answers about screen annotation, Mac &amp; Windows support, Epic Pen alternative, teaching &amp; coding use cases.</div>
+          <span class="sitemap-item-url">/#faq</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="sitemap-section">
+      <h2 class="sitemap-section-title">Use Cases</h2>
+      <div class="sitemap-items">
+
+        <a href="/#use-cases" class="sitemap-item">
+          <div class="sitemap-item-title">Screen Annotation for Teachers</div>
+          <div class="sitemap-item-desc">Annotate live lessons, circle formulas, highlight key text — perfect for online teaching.</div>
+          <span class="sitemap-item-url">/#use-cases</span>
+        </a>
+
+        <a href="/#use-cases" class="sitemap-item">
+          <div class="sitemap-item-title">Presentation Annotation Tool</div>
+          <div class="sitemap-item-desc">Draw on PowerPoint, Keynote, and Google Slides during live presentations.</div>
+          <span class="sitemap-item-url">/#use-cases</span>
+        </a>
+
+        <a href="/#use-cases" class="sitemap-item">
+          <div class="sitemap-item-title">Screen Annotation for Designers</div>
+          <div class="sitemap-item-desc">Mark up UI designs and give visual feedback directly on Figma or the browser.</div>
+          <span class="sitemap-item-url">/#use-cases</span>
+        </a>
+
+        <a href="/#use-cases" class="sitemap-item">
+          <div class="sitemap-item-title">Screen Annotation for Coding Tutorials</div>
+          <div class="sitemap-item-desc">Annotate code in your editor, explain algorithms, and mark bugs on screen.</div>
+          <span class="sitemap-item-url">/#use-cases</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Downloads -->
+    <section class="sitemap-section">
+      <h2 class="sitemap-section-title">Downloads</h2>
+      <div class="sitemap-items">
+
+        <a href="https://github.com/maliyildirimtr/MaliPen/releases/latest/download/MaliPen-mac.dmg" class="sitemap-item" rel="noopener">
+          <div class="sitemap-item-title">MaliPen for macOS</div>
+          <div class="sitemap-item-desc">Download the .dmg installer for macOS 12+ (Apple Silicon). Free &amp; open source.</div>
+          <span class="sitemap-item-url">github.com/maliyildirimtr/MaliPen</span>
+        </a>
+
+        <a href="https://apps.microsoft.com/detail/9NQ52H0BKLH1" class="sitemap-item" target="_blank" rel="noopener noreferrer">
+          <div class="sitemap-item-title">MaliPen for Windows</div>
+          <div class="sitemap-item-desc">Download from the Microsoft Store for Windows 10 &amp; Windows 11. Free.</div>
+          <span class="sitemap-item-url">apps.microsoft.com · 9NQ52H0BKLH1</span>
+        </a>
+
+        <a href="https://github.com/maliyildirimtr/MaliPen" class="sitemap-item" target="_blank" rel="noopener noreferrer">
+          <div class="sitemap-item-title">GitHub Source Code</div>
+          <div class="sitemap-item-desc">View the full open-source repository, release history, and contribute.</div>
+          <span class="sitemap-item-url">github.com/maliyildirimtr/MaliPen</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- External Links -->
+    <section class="sitemap-section">
+      <h2 class="sitemap-section-title">External Links</h2>
+      <div class="sitemap-items">
+
+        <a href="https://maliyildirimtr.com" class="sitemap-item" target="_blank" rel="noopener noreferrer">
+          <div class="sitemap-item-title">Mali Yıldırım</div>
+          <div class="sitemap-item-desc">Personal website of the developer of MaliPen.</div>
+          <span class="sitemap-item-url">maliyildirimtr.com</span>
+        </a>
+
+        <a href="https://academy.maliyildirimtr.com/" class="sitemap-item" target="_blank" rel="noopener noreferrer">
+          <div class="sitemap-item-title">MaliAcademy</div>
+          <div class="sitemap-item-desc">Online education platform by Mali Yıldırım.</div>
+          <span class="sitemap-item-url">academy.maliyildirimtr.com</span>
+        </a>
+
+        <a href="https://www.instagram.com/mali_academy" class="sitemap-item" target="_blank" rel="noopener noreferrer">
+          <div class="sitemap-item-title">Instagram</div>
+          <div class="sitemap-item-desc">Follow @mali_academy for updates, tutorials, and announcements.</div>
+          <span class="sitemap-item-url">instagram.com/mali_academy</span>
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <div class="container">
+    <p>© 2026 <a href="https://maliyildirimtr.com" target="_blank" rel="noopener noreferrer">Mali Yıldırım</a> · <a href="/">MaliPen</a> · <a href="/privacy">Privacy</a> · <a href="/sitemap.xml">sitemap.xml</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
