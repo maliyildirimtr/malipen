@@ -55,6 +55,8 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          # Shows notarytool's own error text (secrets are masked by GitHub)
+          DEBUG: electron-notarize*
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Tag builds go to the GitHub release (auto-update feed); manual runs only build
