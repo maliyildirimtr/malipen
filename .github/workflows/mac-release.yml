@@ -46,6 +46,18 @@ jobs:
       - name: Build renderer + main
         run: npm run build
 
+      - name: Check Apple notarization login
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ -z "$APPLE_ID" ] || [ -z "$APPLE_APP_SPECIFIC_PASSWORD" ] || [ -z "$APPLE_TEAM_ID" ]; then
+            echo "::warning::APPLE_ID / APPLE_APP_SPECIFIC_PASSWORD / APPLE_TEAM_ID missing"; exit 0
+          fi
+          # Fails fast with Apple's own message (wrong password, missing agreement, team mismatch)
+          xcrun notarytool history --apple-id "$APPLE_ID" --password "$APPLE_APP_SPECIFIC_PASSWORD" --team-id "$APPLE_TEAM_ID" | head -5
+
       - name: Build, sign, notarize and publish
         env:
           # "Developer ID Application" certificate exported as .p12, then base64
