@@ -16,6 +16,10 @@ on:
         description: 'Build signed Mac App Store .pkg'
         type: boolean
         default: true
+      publish_dmg:
+        description: 'Upload the DMG to the GitHub release of this version'
+        type: boolean
+        default: false
       upload_to_app_store:
         description: 'Upload the .pkg to App Store Connect'
         type: boolean
@@ -28,7 +32,7 @@ jobs:
   dmg:
     name: DMG (Developer ID, notarized)
     if: github.event_name == 'push' || inputs.build_dmg
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -54,7 +58,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Tag builds go to the GitHub release (auto-update feed); manual runs only build
-          if [ "${{ github.event_name }}" = "push" ]; then PUBLISH=always; else PUBLISH=never; fi
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.publish_dmg }}" = "true" ]; then PUBLISH=always; else PUBLISH=never; fi
           npx --no-install electron-builder --mac dmg zip --universal --publish "$PUBLISH"
 
       - name: Verify signature and notarization
@@ -76,7 +80,7 @@ jobs:
   mas:
     name: Mac App Store (.pkg)
     if: github.event_name == 'push' || inputs.build_mas
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
