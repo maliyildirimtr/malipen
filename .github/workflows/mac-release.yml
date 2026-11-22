@@ -1,0 +1,128 @@
+name: macOS Release (DMG + Mac App Store)
+
+# Runs on a version tag (v1.0.4 …) or by hand from the Actions tab.
+# Required repository secrets are listed in docs/MAC_SIGNING.md.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      build_dmg:
+        description: 'Build signed + notarized DMG (Developer ID)'
+        type: boolean
+        default: true
+      build_mas:
+        description: 'Build signed Mac App Store .pkg'
+        type: boolean
+        default: true
+      upload_to_app_store:
+        description: 'Upload the .pkg to App Store Connect'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  dmg:
+    name: DMG (Developer ID, notarized)
+    if: github.event_name == 'push' || inputs.build_dmg
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build renderer + main
+        run: npm run build
+
+      - name: Build, sign, notarize and publish
+        env:
+          # "Developer ID Application" certificate exported as .p12, then base64
+          CSC_LINK: ${{ secrets.MAC_DEVELOPER_ID_P12_BASE64 }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_DEVELOPER_ID_P12_PASSWORD }}
+          # Notarization (Apple ID + app-specific password)
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Tag builds go to the GitHub release (auto-update feed); manual runs only build
+          if [ "${{ github.event_name }}" = "push" ]; then PUBLISH=always; else PUBLISH=never; fi
+          npx --no-install electron-builder --mac dmg zip --universal --publish "$PUBLISH"
+
+      - name: Verify signature and notarization
+        run: |
+          APP=$(find release -maxdepth 2 -name 'MaliPen.app' -type d | head -1)
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          spctl --assess --type execute --verbose "$APP"
+          xcrun stapler validate release/*.dmg
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MaliPen-mac-dmg
+          path: |
+            release/*.dmg
+            release/*.zip
+            release/latest-mac.yml
+          if-no-files-found: error
+
+  mas:
+    name: Mac App Store (.pkg)
+    if: github.event_name == 'push' || inputs.build_mas
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Restore provisioning profile
+        env:
+          MAS_PROVISION_PROFILE_BASE64: ${{ secrets.MAS_PROVISION_PROFILE_BASE64 }}
+        run: |
+          test -n "$MAS_PROVISION_PROFILE_BASE64" || { echo "::error::MAS_PROVISION_PROFILE_BASE64 secret is missing"; exit 1; }
+          echo "$MAS_PROVISION_PROFILE_BASE64" | base64 --decode > build/MaliPen_Mac_App_Store.provisionprofile
+
+      - name: Build renderer + main
+        run: npm run build
+
+      - name: Build and sign the App Store package
+        env:
+          # One .p12 holding BOTH "Apple Distribution" and "Mac Installer Distribution"
+          CSC_LINK: ${{ secrets.MAS_CERTS_P12_BASE64 }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAS_CERTS_P12_PASSWORD }}
+        run: npx --no-install electron-builder --mac mas --universal --publish never
+
+      - name: Check the package
+        run: |
+          PKG=$(ls release/mas-universal/*.pkg 2>/dev/null || ls release/*.pkg)
+          echo "PKG=$PKG" >> "$GITHUB_ENV"
+          pkgutil --check-signature "$PKG"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MaliPen-mas-pkg
+          path: ${{ env.PKG }}
+          if-no-files-found: error
+
+      - name: Upload to App Store Connect
+        if: github.event_name == 'workflow_dispatch' && inputs.upload_to_app_store
+        env:
+          ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
+        run: |
+          mkdir -p ~/private_keys
+          printf '%s' "$ASC_KEY_P8" > ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          xcrun altool --upload-app -f "$PKG" -t macos --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"

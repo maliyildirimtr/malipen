@@ -32,3 +32,10 @@ release
 .env.test.local
 .env.production.local
 node_modules
+
+# Local code-signing artifacts
+*.provisionprofile
+*.mobileprovision
+*.p12
+*.pfx
+*.cer

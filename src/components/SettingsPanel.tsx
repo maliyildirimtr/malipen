@@ -1,32 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Settings, Shortcuts, DEFAULT_SETTINGS, translations } from '../types/settings';
+import { AppearanceSection } from './settings/AppearanceSection';
 
 interface SettingsPanelProps {
   settings: Settings;
   onUpdate: (settings: Settings) => void;
   onClose: () => void;
   position?: React.CSSProperties;
+  /** Shortcuts the OS refused to register system-wide (another app owns them). */
+  failedShortcuts?: string[];
+  /** Global shortcuts are paused while a new key combination is being recorded. */
+  onRecordingChange?: (recording: boolean) => void;
 }
 
 export const SettingsPanel: React.FC<SettingsPanelProps> = ({ 
   settings, 
   onUpdate, 
   onClose,
-  position
+  position,
+  failedShortcuts = [],
+  onRecordingChange
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const [recordingShortcut, setRecordingShortcut] = useState<keyof Shortcuts | null>(null);
   const [showShapeShortcuts, setShowShapeShortcuts] = useState<boolean>(false);
-  const [displays, setDisplays] = useState<Array<{id: number, bounds: any}>>([]);
+  const [displays, setDisplays] = useState<Array<{ id: number, bounds: { width: number, height: number } }>>([]);
 
   const t = translations[settings.language === 'English' ? 'en' : 'tr'];
 
   useEffect(() => {
-    window.electronAPI.getDisplays().then(setDisplays);
+    window.electronAPI?.getDisplays().then(setDisplays).catch(() => setDisplays([]));
   }, []);
 
+  useEffect(() => {
+    onRecordingChange?.(recordingShortcut !== null);
+  }, [recordingShortcut, onRecordingChange]);
+  useEffect(() => () => onRecordingChange?.(false), [onRecordingChange]);
+
   const handleSelectFolder = async () => {
-    const folder = await window.electronAPI.selectFolder();
+    const folder = await window.electronAPI?.selectFolder();
     if (folder) {
       updateSetting('screenshotFolder', folder);
     }
@@ -34,7 +46,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   const handleSetStartup = (val: boolean) => {
     updateSetting('startOnWindowsStartup', val);
-    window.electronAPI.setOpenAtLogin(val);
+    window.electronAPI?.setOpenAtLogin(val);
   };
 
 
@@ -175,7 +187,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <button
               onClick={(e) => { e.stopPropagation(); onToggle?.(); }}
               style={{
-                background: 'rgba(255,255,255,0.1)', border: 'none', color: '#ccc', cursor: 'pointer', 
+                background: 'rgba(var(--mp-fg-rgb), 0.1)', border: 'none', color: 'var(--mp-text-muted)', cursor: 'pointer', 
                 padding: '2px 6px', display: 'flex', alignItems: 'center', borderRadius: '4px'
               }}
               title={t.showSubShortcuts}
@@ -186,15 +198,16 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </button>
           )}
         </span>
-        <span className="epic-shortcut-key">
+        <span className="epic-shortcut-key" title={failedShortcuts.includes(key) ? `${settings.shortcuts[key]} ${t.shortcutTaken}` : undefined}>
           {isActive ? t.pressKey : settings.shortcuts[key] || t.unassigned}
+          {!isActive && failedShortcuts.includes(key) && <span style={{ color: '#fbbf24', marginLeft: 6 }}>⚠</span>}
         </span>
       </div>
     );
   };
 
   if (!settings || !settings.shortcuts) {
-    return <div className="epic-settings-panel" style={{ top: '50px', left: '50px', padding: '20px', background: 'white' }}>Settings Error: Invalid state</div>;
+    return <div className="epic-settings-panel" style={{ top: '50px', left: '50px', padding: '20px', background: 'var(--mp-text)' }}>Settings Error: Invalid state</div>;
   }
 
   return (
@@ -206,16 +219,24 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
     >
       <div className="epic-settings-header" style={{ justifyContent: 'space-between' }}>
         <span>{t.settings}</span>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '18px' }}>✕</button>
+        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--mp-text)', cursor: 'pointer', fontSize: '18px' }}>✕</button>
       </div>
       
       <div className="epic-settings-content">
+
+        <AppearanceSection
+          mode={settings.themeMode}
+          accent={settings.themeAccent}
+          language={settings.language}
+          labels={t}
+          onChange={(next) => onUpdate({ ...settings, ...next })}
+        />
         
         {/* Genel Ayarlar */}
         <div>
           <div className="epic-section-title">{t.tools}</div>
           <div style={{ marginTop: '12px', marginBottom: '12px' }}>
-            <div style={{ fontSize: '13px', color: '#a1a1aa', fontWeight: 600, marginBottom: '8px' }}>{t.toolbarOrientation}</div>
+            <div style={{ fontSize: '13px', color: 'var(--mp-text-muted)', fontWeight: 600, marginBottom: '8px' }}>{t.toolbarOrientation}</div>
             <div style={{ display: 'flex', gap: '16px' }}>
               {renderRadio(t.toolbarOrientationVertical, 'toolbarOrientation', 'vertical')}
               {renderRadio(t.toolbarOrientationHorizontal, 'toolbarOrientation', 'horizontal')}
@@ -232,14 +253,17 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </div>
           {renderCheckbox(t.checkUpdatesOnStartup, 'checkUpdatesOnStartup')}
           {renderCheckbox(t.showCursorPreview, 'showCursorPreview')}
+          {renderCheckbox(t.autoShapeRecognition, 'autoShapeRecognition')}
+          {renderCheckbox(t.confirmBeforeClearing, 'confirmBeforeClearing')}
+          {renderCheckbox(t.confirmBeforeDeleting, 'confirmBeforeDeleting')}
           
           <div style={{ marginTop: '16px' }}>
-            <div style={{ fontSize: '13px', color: '#a1a1aa', fontWeight: 600, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--mp-text-muted)', fontWeight: 600, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               {t.laserMode}
             </div>
             {renderRadio(t.laserModeIndividual, 'laserMode', 'individual')}
             {renderRadio(t.laserModeGroup, 'laserMode', 'group')}
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#e4e4e7', marginTop: '12px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: 'var(--mp-text-secondary)', marginTop: '12px', marginBottom: '8px' }}>
               <span>{t.laserFadeDuration}</span>
               <span>{(settings.laserFadeDuration / 1000).toFixed(1)} s</span>
             </div>
@@ -253,7 +277,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </div>
 
           <div style={{ marginTop: '16px' }}>
-            <div style={{ fontSize: '13px', color: '#a1a1aa', fontWeight: 600, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--mp-text-muted)', fontWeight: 600, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               {t.penStabilizer}
             </div>
             {renderRadio(t.stabilizerOff, 'penStabilizer', 'off')}
@@ -262,7 +286,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             {renderRadio(t.stabilizerSilky, 'penStabilizer', 'silky')}
             {renderRadio(t.stabilizerFluid, 'penStabilizer', 'fluid')}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#e4e4e7', marginTop: '12px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: 'var(--mp-text-secondary)', marginTop: '12px', marginBottom: '8px' }}>
               <span>{t.penOpacity}</span>
               <span>{Math.round((settings.penOpacity ?? 1.0) * 100)}%</span>
             </div>
@@ -274,7 +298,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               style={{ width: '100%', cursor: 'pointer' }}
             />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#e4e4e7', marginTop: '12px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: 'var(--mp-text-secondary)', marginTop: '12px', marginBottom: '8px' }}>
               <span>{t.highlighterOpacity}</span>
               <span>{Math.round((settings.highlighterOpacity ?? 0.35) * 100)}%</span>
             </div>
@@ -287,7 +311,28 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
           </div>
           
-          <button className="epic-button" onClick={() => onUpdate(DEFAULT_SETTINGS)}>{t.resetToDefault}</button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: 'var(--mp-text-secondary)', marginTop: '12px', marginBottom: '8px' }}>
+            <span>{t.laserSize}</span>
+            <span>{settings.laserSize}px</span>
+          </div>
+          <input
+            type="range"
+            min="2" max="40" step="1"
+            value={settings.laserSize}
+            onChange={(e) => updateSetting('laserSize', parseInt(e.target.value, 10))}
+            style={{ width: '100%', cursor: 'pointer', marginBottom: '12px' }}
+          />
+
+          {/* Resets tool settings; keeps language, save folder and shortcuts */}
+          <button className="epic-button" onClick={() => onUpdate({
+            ...DEFAULT_SETTINGS,
+            language: settings.language,
+            themeMode: settings.themeMode,
+            themeAccent: settings.themeAccent,
+            screenshotFolder: settings.screenshotFolder,
+            shortcuts: settings.shortcuts,
+            favoriteColors: settings.favoriteColors,
+          })}>{t.resetToDefault}</button>
         </div>
 
         {/* Dil */}
@@ -331,7 +376,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           <div className="epic-section-title">{t.screenshot}</div>
           {renderRadio(t.askAlways, 'screenshotSaveMode', 'ask')}
           {renderRadio(t.saveAlwaysToFolder, 'screenshotSaveMode', 'folder', (
-             <div onClick={handleSelectFolder} style={{ color: '#00a8ff', fontSize: '14px', cursor: 'pointer' }}>{settings.screenshotFolder}</div>
+             <div onClick={handleSelectFolder} title={settings.screenshotFolder} style={{ color: 'var(--mp-accent-text)', fontSize: '14px', cursor: 'pointer', wordBreak: 'break-all' }}>{settings.screenshotFolder || (settings.language === 'English' ? 'Desktop' : 'Masaüstü')}</div>
           ))}
           {renderCheckbox(t.captureFullDesktop, 'captureFullDesktop')}
         </div>
@@ -339,9 +384,11 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
         {/* Beyaz Tahta */}
         <div>
           <div className="epic-section-title">{t.whiteboard}</div>
-          {renderRadio(t.whiteboardAllScreens, 'whiteboardMode', 'all', undefined)}
+          {renderRadio(t.whiteboardAllScreens, 'whiteboardMode', 'all', (
+            <div style={{ fontSize: '12px', color: 'var(--mp-text-muted)' }}>{t.allScreensNote}</div>
+          ))}
           {renderRadio(t.whiteboardSingleScreen, 'whiteboardMode', 'single', (
-            <select className="epic-select" value={settings.whiteboardScreen} onChange={(e) => updateSetting('whiteboardScreen', e.target.value)}>
+            <select className="epic-select" value={settings.whiteboardScreen} onChange={(e) => updateSetting('whiteboardScreen', e.target.value)} title={t.singleScreenNote}>
               {displays.map((d, i) => (
                 <option key={d.id} value={`${t.screenLabel} ${i+1}`}>{t.screenLabel} {i+1} ({d.bounds.width}x{d.bounds.height})</option>
               ))}
@@ -352,7 +399,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
         {/* Hayalet Modu */}
         <div>
           <div className="epic-section-title">{t.ghostMode}</div>
-          <div style={{ fontSize: '13px', color: '#a1a1aa', marginBottom: '8px', lineHeight: '1.4' }}>
+          <div style={{ fontSize: '13px', color: 'var(--mp-text-muted)', marginBottom: '8px', lineHeight: '1.4' }}>
             {t.ghostModeDesc}
           </div>
           {renderCheckbox(t.enableGhostMode, 'ghostMode')}
@@ -373,7 +420,9 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid #eee', paddingTop: '8px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--mp-text-muted)', marginBottom: '8px', lineHeight: 1.4 }}>{t.globalShortcutsNote}</div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid rgba(var(--mp-fg-rgb), 0.1)', paddingTop: '8px' }}>
             {renderShortcut(t.shortcutToggleToolbar, 'toggleToolbar')}
             {renderShortcut(t.shortcutToggleInk, 'toggleInk')}
             {renderShortcut(t.shortcutSelect, 'select')}
@@ -390,7 +439,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             {renderShortcut(t.shortcutShapes, 'shapes', true, showShapeShortcuts, () => setShowShapeShortcuts(prev => !prev))}
 
             {showShapeShortcuts && (
-              <div style={{ borderLeft: '2px solid #555', marginLeft: '15px', paddingLeft: '5px', background: 'rgba(0,0,0,0.2)' }}>
+              <div style={{ borderLeft: '2px solid #555', marginLeft: '15px', paddingLeft: '5px', background: 'rgba(var(--mp-shadow-rgb), 0.2)' }}>
                 {renderShortcut(t.shortcutShapeLine, 'shapeLine')}
                 {renderShortcut(t.shortcutShapeArrow, 'shapeArrow')}
                 {renderShortcut(t.shortcutShapeDoubleArrow, 'shapeDoubleArrow')}

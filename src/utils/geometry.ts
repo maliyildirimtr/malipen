@@ -40,7 +40,10 @@ export const isPointInPolygon = (point: Point, vs: Point[]) => {
 };
 
 export const hitTestShape = (x: number, y: number, stroke: Stroke): boolean => {
-  if (stroke.points.length < 2 && stroke.type !== 'pen' && stroke.type !== 'highlighter' && stroke.type !== 'eraser') return false;
+  // Pixel-eraser marks are invisible; they must never be picked, moved or object-erased
+  // (object-erasing one would bring the erased ink back).
+  if (stroke.type === 'eraser' || stroke.type === 'laser') return false;
+  if (stroke.points.length < 2 && stroke.type !== 'pen' && stroke.type !== 'highlighter') return false;
   const p = { x, y };
   const p1 = stroke.points[0];
   const p2 = stroke.points[stroke.points.length - 1];
@@ -64,7 +67,8 @@ export const hitTestShape = (x: number, y: number, stroke: Stroke): boolean => {
       const minY = Math.min(p1.y, p2.y);
       const maxY = Math.max(p1.y, p2.y);
 
-      if (isFilled) {
+      // Images are solid: clicking anywhere on the picture selects it
+      if (isFilled || stroke.type === 'image') {
         return x >= minX && x <= maxX && y >= minY && y <= maxY;
       } else {
         // Check proximity to edges
@@ -75,23 +79,23 @@ export const hitTestShape = (x: number, y: number, stroke: Stroke): boolean => {
         return Math.min(dTop, dBottom, dLeft, dRight) <= tolerance;
       }
     }
-    case 'circle': {
-      const radius = distance(p1, p2);
-      const dist = distance(p, p1);
-      if (isFilled) return dist <= radius;
-      return Math.abs(dist - radius) <= tolerance;
-    }
+    case 'circle':
     case 'ellipse': {
-      const radiusX = Math.abs(p2.x - p1.x);
-      const radiusY = Math.abs(p2.y - p1.y);
-      if (radiusX === 0 || radiusY === 0) return false;
-      // Normalized equation of ellipse
-      const dx = (p.x - p1.x) / radiusX;
-      const dy = (p.y - p1.y) / radiusY;
-      const value = dx * dx + dy * dy;
-      if (isFilled) return value <= 1;
-
-      return Math.abs(value - 1) <= (tolerance / Math.max(radiusX, radiusY));
+      // Circles and ellipses are stored like rectangles: points[0] / points[1] are
+      // opposite corners of the bounding box (this is also how they are drawn).
+      const cx = (p1.x + p2.x) / 2;
+      const cy = (p1.y + p2.y) / 2;
+      const radiusX = Math.abs(p2.x - p1.x) / 2;
+      const radiusY = Math.abs(p2.y - p1.y) / 2;
+      if (radiusX === 0 || radiusY === 0) return distToSegment(p, p1, p2) <= tolerance;
+      const dx = (p.x - cx) / radiusX;
+      const dy = (p.y - cy) / radiusY;
+      const d = Math.sqrt(dx * dx + dy * dy); // 1 on the outline
+      if (isFilled && d <= 1) return true;
+      // Distance to the outline in pixels, approximated along the ray from the centre
+      const rayLen = Math.hypot(p.x - cx, p.y - cy);
+      if (d === 0) return Math.min(radiusX, radiusY) <= tolerance;
+      return Math.abs(rayLen - rayLen / d) <= tolerance;
     }
     case 'polygon':
     case 'free-polygon': {
@@ -107,10 +111,18 @@ export const hitTestShape = (x: number, y: number, stroke: Stroke): boolean => {
         return false;
       }
     }
-    case 'pen':
-    case 'highlighter':
-    case 'eraser':
     case 'free-ellipse': {
+      if (stroke.points.length >= 3 && isFilled && isPointInPolygon(p, stroke.points)) return true;
+      for (let i = 0; i < stroke.points.length; i++) {
+        const v = stroke.points[i];
+        const w = stroke.points[(i + 1) % stroke.points.length]; // closed curve
+        if (distToSegment(p, v, w) <= tolerance) return true;
+      }
+      return false;
+    }
+    case 'pen':
+    case 'highlighter': {
+      if (stroke.points.length === 1) return distance(p, stroke.points[0]) <= tolerance;
       for (let i = 0; i < stroke.points.length - 1; i++) {
         if (distToSegment(p, stroke.points[i], stroke.points[i + 1]) <= tolerance) return true;
       }
@@ -121,8 +133,28 @@ export const hitTestShape = (x: number, y: number, stroke: Stroke): boolean => {
   }
 };
 
-export const getStrokeBounds = (stroke: Stroke) => {
+/**
+ * Text bounds without a canvas (used for selection hit-boxes). The renderer measures
+ * real glyphs with measureTextBounds; this estimate keeps selection, marquee and group
+ * dragging working for text, whose only stored point is its top-left anchor.
+ */
+const estimateTextBounds = (stroke: Stroke): Rect | null => {
+  const fmt = stroke.textFormat;
+  if (!fmt || stroke.points.length === 0) return null;
+  const lines = (fmt.text || ' ').split('\n');
+  const longest = Math.max(1, ...lines.map(l => l.length));
+  const w = longest * fmt.fontSize * (fmt.isBold ? 0.62 : 0.56);
+  const h = lines.length * fmt.fontSize * 1.2;
+  const pad = stroke.isFilled ? 8 : 0;
+  let x = stroke.points[0].x;
+  if (fmt.alignment === 'center') x -= w / 2;
+  else if (fmt.alignment === 'right') x -= w;
+  return { x: x - pad, y: stroke.points[0].y - pad, w: w + pad * 2, h: h + pad * 2 };
+};
+
+export const getStrokeBounds = (stroke: Stroke): Rect | null => {
   if (stroke.points.length === 0) return null;
+  if (stroke.type === 'text') return estimateTextBounds(stroke);
   let minX = stroke.points[0].x;
   let maxX = stroke.points[0].x;
   let minY = stroke.points[0].y;
@@ -146,6 +178,7 @@ export const getStrokeBounds = (stroke: Stroke) => {
 };
 
 export const isStrokeInRect = (stroke: Stroke, rect: Rect): boolean => {
+  if (stroke.type === 'eraser' || stroke.type === 'laser') return false;
   const minX = Math.min(rect.x, rect.x + rect.w);
   const maxX = Math.max(rect.x, rect.x + rect.w);
   const minY = Math.min(rect.y, rect.y + rect.h);
@@ -172,6 +205,7 @@ export const isStrokeInRect = (stroke: Stroke, rect: Rect): boolean => {
 
 export const isStrokeInPolygon = (stroke: Stroke, polygon: Point[]): boolean => {
   if (polygon.length < 3) return false;
+  if (stroke.type === 'eraser' || stroke.type === 'laser') return false;
 
   // Check if any stroke point is in polygon
   for (const p of stroke.points) {
@@ -460,7 +494,7 @@ export const recognizeGeometricShape = (points: Point[]): RecognizedShape | null
         const r = (rx + ry) / 2;
         return {
           type: 'circle',
-          points: [{ x: cx, y: cy }, { x: cx + r, y: cy }],
+          points: [{ x: cx - r, y: cy - r }, { x: cx + r, y: cy + r }], // bounding-box corners, like every other shape
           confidence: 1 - avgEllipseError
         };
       } else {
@@ -488,7 +522,7 @@ export const recognizeGeometricShape = (points: Point[]): RecognizedShape | null
         const r = (rx + ry) / 2;
         return {
           type: 'circle',
-          points: [{ x: cx, y: cy }, { x: cx + r, y: cy }],
+          points: [{ x: cx - r, y: cy - r }, { x: cx + r, y: cy + r }], // bounding-box corners, like every other shape
           confidence: 0.8
         };
       } else {

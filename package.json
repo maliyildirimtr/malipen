@@ -1,6 +1,6 @@
 {
   "name": "malipen",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "repository": "https://github.com/maliyildirimtr/MaliPen",
   "author": "MaliYildirimTR",
   "description": "Production-quality screen annotation application",
@@ -8,10 +8,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:mac": "npm run build && electron-builder --mac dmg zip --universal --publish never",
+    "dist:mas": "npm run build && electron-builder --mac mas --universal --publish never",
     "dist:win": "npm run build && electron-builder --win --x64",
+    "dist:store": "npm run build && electron-builder --win appx --x64 --publish never",
     "release": "npm run build && electron-builder --publish always",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "build": {
     "appId": "com.maliyildirimtr.malipen",
@@ -35,8 +39,18 @@
     "afterPack": "./build/afterPack.js",
     "mac": {
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
       ],
       "icon": "build/icon.icns",
       "artifactName": "MaliPen-mac.${ext}",
@@ -44,6 +58,20 @@
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "notarize": true
+    },
+    "mas": {
+      "type": "distribution",
+      "hardenedRuntime": false,
+      "notarize": false,
+      "minimumSystemVersion": "12.0",
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "build/MaliPen_Mac_App_Store.provisionprofile",
+      "category": "public.app-category.productivity",
+      "extendInfo": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "artifactName": "MaliPen-mas-${version}.${ext}"
     },
     "dmg": {
       "title": "MaliPen Installer",
@@ -58,6 +86,14 @@
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "appx": {
+      "identityName": "MehmetAliYldrm.MaliPen",
+      "publisher": "CN=91E39BFD-90E8-4CA1-B4FE-3DAAC4FC4492",
+      "publisherDisplayName": "Mehmet Ali YILDIRIM",
+      "displayName": "MaliPen",
+      "applicationId": "MaliPen",
+      "artifactName": "MaliPen-Store-${version}-${arch}.${ext}"
     }
   },
   "dependencies": {

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Stroke, TextFormat } from './DrawingCanvas';
 import { brushSizeToSlider, sliderToBrushSize } from '../utils/geometry';
-import { AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline } from 'lucide-react';
+import { AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline, Crop, RotateCcw } from 'lucide-react';
+import { applyCropToStroke, FULL_CROP, isCropped } from '../utils/crop';
 
 export const fontSizeToSlider = (size: number): number => {
   const s = Math.max(10, Math.min(140, size || 24));
@@ -33,10 +34,13 @@ interface PropertiesPanelProps {
   onClose: () => void;
   position?: { x: number; y: number };
   language?: string;
+  /** Opens the crop editor for an image stroke */
+  onCrop?: () => void;
 }
 
-export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ stroke, onChange, onClose, position, language = 'Türkçe' }) => {
+export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ stroke, onChange, onClose, position, language = 'Türkçe', onCrop }) => {
   const isEn = language === 'English';
+  const isImage = stroke.type === 'image';
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,7 +79,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ stroke, onChan
       onMouseDown={(e) => e.stopPropagation()}
     >
       <div className="properties-header">
-        <span>{stroke.type === 'text' ? (isEn ? 'Text Settings' : 'Metin Ayarları') : (isEn ? 'Shape Settings' : 'Şekil Ayarları')}</span>
+        <span>{stroke.type === 'text' ? (isEn ? 'Text Settings' : 'Metin Ayarları') : isImage ? (isEn ? 'Image Settings' : 'Görsel Ayarları') : (isEn ? 'Shape Settings' : 'Şekil Ayarları')}</span>
         <button onClick={onClose} className="close-btn">×</button>
       </div>
       
@@ -160,6 +164,23 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ stroke, onChan
               </button>
             </div>
           </>
+        ) : isImage ? (
+          <>
+            <div className="prop-row format-buttons">
+              <button className="prop-action-btn" onClick={() => onCrop?.()} title={isEn ? 'Crop image' : 'Görseli kırp'}>
+                <Crop size={16} /> <span>{isEn ? 'Crop' : 'Kırp'}</span>
+              </button>
+              {isCropped(stroke.crop) && (
+                <button
+                  className="prop-action-btn"
+                  onClick={() => update(applyCropToStroke(stroke, FULL_CROP), true)}
+                  title={isEn ? 'Show the whole image again' : 'Görselin tamamını geri getir'}
+                >
+                  <RotateCcw size={16} /> <span>{isEn ? 'Reset crop' : 'Kırpmayı sıfırla'}</span>
+                </button>
+              )}
+            </div>
+          </>
         ) : (
           <>
              <div className="prop-column">
@@ -184,13 +205,15 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ stroke, onChan
           </>
         )}
 
-        <div className="prop-row">
-          <label>{stroke.type === 'text' ? (isEn ? 'Text Color' : 'Metin Rengi') : (isEn ? 'Stroke Color' : 'Çizgi Rengi')}</label>
-          <input type="color" value={stroke.color} 
-            onChange={(e) => update({ color: e.target.value }, false)}
-            onBlur={(e) => update({ color: e.target.value }, true)}
-          />
-        </div>
+        {!isImage && (
+          <div className="prop-row">
+            <label>{stroke.type === 'text' ? (isEn ? 'Text Color' : 'Metin Rengi') : (isEn ? 'Stroke Color' : 'Çizgi Rengi')}</label>
+            <input type="color" value={stroke.color}
+              onChange={(e) => update({ color: e.target.value }, false)}
+              onBlur={(e) => update({ color: e.target.value }, true)}
+            />
+          </div>
+        )}
 
         {((stroke.type === 'text' && stroke.isFilled) || (stroke.type !== 'text' && stroke.isFilled)) && (
           <>
@@ -247,7 +270,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ stroke, onChan
             />
             <div className="prop-ticks-row">
               <span>-180°</span>
-              <span style={{ fontWeight: (stroke.rotation ?? 0) === 0 ? '700' : 'normal', color: (stroke.rotation ?? 0) === 0 ? '#60a5fa' : '#71717a' }}>0°</span>
+              <span style={{ fontWeight: (stroke.rotation ?? 0) === 0 ? '700' : 'normal', color: (stroke.rotation ?? 0) === 0 ? 'var(--mp-accent-light)' : 'var(--mp-text-subtle)' }}>0°</span>
               <span>+180°</span>
             </div>
           </div>

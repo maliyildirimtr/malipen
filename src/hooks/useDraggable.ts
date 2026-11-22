@@ -35,6 +35,18 @@ export const useDraggable = (ref: RefObject<HTMLElement>) => {
     };
   }, [isDragging, dragOffset]);
 
+  // Keep the toolbar on screen when the window/display size changes
+  useEffect(() => {
+    const clamp = () => {
+      setPosition(prev => ({
+        x: Math.max(0, Math.min(window.innerWidth - (ref.current?.offsetWidth || 60), prev.x)),
+        y: Math.max(0, Math.min(window.innerHeight - (ref.current?.offsetHeight || 60), prev.y)),
+      }));
+    };
+    window.addEventListener('resize', clamp);
+    return () => window.removeEventListener('resize', clamp);
+  }, [ref]);
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();

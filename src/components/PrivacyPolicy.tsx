@@ -22,11 +22,8 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
     return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [onClose]);
 
-  const lastUpdated = new Date().toLocaleDateString(isEn ? 'en-US' : 'tr-TR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
+  // A fixed date: the policy text changes only when this file changes
+  const lastUpdated = isEn ? 'October 10, 2026' : '10 Ekim 2026';
 
   return (
     <div className="privacy-overlay" onClick={onClose}>
@@ -62,7 +59,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
                   The MaliPen application <strong>does not collect, process, or store any personal data</strong> such as your name, email address, or location.
                 </p>
                 <ul>
-                  <li><strong>Drawings & Board Contents:</strong> All drawings, text, and annotations made on the screen, whiteboard, or blackboard are only temporarily processed in your device's RAM memory and local disk. None of this data is transmitted externally.</li>
+                  <li><strong>Drawings & Board Contents:</strong> All drawings, text, and annotations made on the screen, whiteboard, or blackboard are only kept in your device's memory while MaliPen is running. None of this data is transmitted externally.</li>
                   <li><strong>Screenshots:</strong> Images captured using the built-in screenshot tool are saved directly to your local clipboard or local storage folder of your choice.</li>
                   <li><strong>User Settings:</strong> Custom colors, brush sizes, favorite tools, and shortcuts are saved locally on your device in your user settings file.</li>
                 </ul>
@@ -72,6 +69,9 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
                 <h2>3. Third-Party Services & Links</h2>
                 <p>
                   MaliPen contains no background analytics, trackers, or advertising services.
+                </p>
+                <p>
+                  <strong>Updates:</strong> the downloadable (non-App Store) version checks GitHub Releases for a new version when it starts, if "Check for updates on startup" is enabled in Settings. This request only downloads release information and installers; no drawings, screenshots or personal data are sent.
                 </p>
                 <p>
                   External links provided in the "About" dialog (Mali Academy, Instagram, GitHub) open directly in your computer's <strong>default web browser</strong>. When visiting external sites, their respective privacy policies apply.
@@ -94,7 +94,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
                   <a href="#" onClick={(e) => {
                     e.preventDefault();
                     window.open('https://maliyildirimtr.com/sosyal.html');
-                  }} style={{ color: '#3b82f6', textDecoration: 'underline' }}>
+                  }} style={{ color: 'var(--mp-accent)', textDecoration: 'underline' }}>
                     maliyildirimtr.com
                   </a>
                 </p>
@@ -115,7 +115,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
                   MaliPen uygulaması, adınız, e-posta adresiniz veya konumunuz gibi <strong>hiçbir kişisel veriyi toplamaz, işlemez veya saklamaz.</strong>
                 </p>
                 <ul>
-                  <li><strong>Çizimler ve Tahta İçerikleri:</strong> Beyaz tahta (whiteboard), kara tahta (blackboard) veya ekran üzerinde yaptığınız tüm çizimler, metinler ve şekiller (annotation) yalnızca anlık olarak bilgisayarınızın RAM belleğinde ve lokal diskinizde işlenir. Bu veriler dışarı aktarılmaz.</li>
+                  <li><strong>Çizimler ve Tahta İçerikleri:</strong> Beyaz tahta (whiteboard), kara tahta (blackboard) veya ekran üzerinde yaptığınız tüm çizimler, metinler ve şekiller (annotation) yalnızca MaliPen açıkken bilgisayarınızın belleğinde tutulur. Bu veriler dışarı aktarılmaz.</li>
                   <li><strong>Ekran Görüntüleri:</strong> Uygulama içi ekran görüntüsü alma aracıyla oluşturduğunuz görseller, doğrudan panonuza (clipboard) veya bilgisayarınızın yerel depolama alanına kaydedilir.</li>
                   <li><strong>Kullanıcı Ayarları:</strong> Seçtiğiniz renkler, fırça boyutları, favori araçlarınız ve diğer uygulama içi ayarlar, bilgisayarınızda yerel bir dosyada (<code>settings.json</code>) saklanır.</li>
                 </ul>
@@ -125,6 +125,9 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
                 <h2>3. Üçüncü Taraf Hizmetler ve Bağlantılar</h2>
                 <p>
                   MaliPen, arka planda çalışan herhangi bir analiz (analytics), reklam veya izleme aracı içermez.
+                </p>
+                <p>
+                  <strong>Güncellemeler:</strong> İndirilebilir (App Store dışı) sürüm, Ayarlar'da "Başlangıçta güncellemeleri kontrol et" açıksa, açılışta yeni sürüm olup olmadığını GitHub Releases üzerinden kontrol eder. Bu istek yalnızca sürüm bilgisini ve kurulum dosyasını indirir; çizim, ekran görüntüsü veya kişisel veri gönderilmez.
                 </p>
                 <p>
                   Uygulamanın "Hakkında" bölümünde yer alan dış bağlantılara (Mali Academy web sitesi, Instagram, GitHub) tıkladığınızda, bu sayfalar uygulamanın içinde değil, bilgisayarınızın <strong>varsayılan web tarayıcısında</strong> açılır. Bu siteleri ziyaret ettiğinizde, o platformların kendi gizlilik politikaları geçerli olacaktır.
@@ -147,7 +150,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onClose, language 
                   <a href="#" onClick={(e) => {
                     e.preventDefault();
                     window.open('https://maliyildirimtr.com/sosyal.html');
-                  }} style={{ color: '#3b82f6', textDecoration: 'underline' }}>
+                  }} style={{ color: 'var(--mp-accent)', textDecoration: 'underline' }}>
                     maliyildirimtr.com
                   </a>
                 </p>

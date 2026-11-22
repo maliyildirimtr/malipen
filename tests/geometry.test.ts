@@ -39,12 +39,13 @@ describe('Geometry Hit Testing', () => {
     expect(hitTestShape(10, 50, rect)).toBe(true); // On the edge
   });
 
-  it('hit tests a circle correctly', () => {
+  it('hit tests a circle stored as its bounding box', () => {
+    // Circles are stored like every other shape: opposite corners of the bounding box
     const circle: Stroke = {
       id: '3', type: 'circle', width: 2, color: '#000', isFilled: true,
-      points: [{x: 0, y: 0}, {x: 10, y: 0}] // Radius = 10
+      points: [{x: -10, y: -10}, {x: 10, y: 10}] // centre (0,0), radius 10
     };
     expect(hitTestShape(5, 0, circle)).toBe(true);
-    expect(hitTestShape(15, 0, circle)).toBe(false);
+    expect(hitTestShape(15, 15, circle)).toBe(false);
   });
 });

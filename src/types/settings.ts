@@ -36,6 +36,10 @@ export interface Shortcuts {
 }
 
 export interface Settings {
+  /** Appearance: 'colorful' derives every UI colour from themeAccent */
+  themeMode: 'dark' | 'light' | 'colorful';
+  themeAccent: string;
+
   penSize: number;
   highlighterSize: number;
   laserSize: number;
@@ -77,10 +81,29 @@ export interface Settings {
   
   disableShortcuts: boolean;
 
+  // Defaults for newly created text
+  textFontFamily: string;
+  textFontSize: number;
+  textBold: boolean;
+  textItalic: boolean;
+  textUnderline: boolean;
+  textAlignment: 'left' | 'center' | 'right';
+  textBackground: boolean;
+
   shortcuts: Shortcuts;
+
+  /** Schema version of the persisted settings; used for one-time migrations. */
+  settingsVersion?: number;
 }
 
+export const SETTINGS_VERSION = 2;
+
+const isMacPlatform = typeof navigator !== 'undefined' && /mac/i.test(navigator.userAgent || '');
+
 export const DEFAULT_SETTINGS: Settings = {
+  themeMode: 'dark',
+  themeAccent: '#ff007f',
+
   penSize: 5,
   highlighterSize: 20,
   laserSize: 8,
@@ -100,15 +123,15 @@ export const DEFAULT_SETTINGS: Settings = {
   confirmBeforeDeleting: true,
   
   toolbarOrientation: 'vertical',
-  rememberShortcutsOnClose: false,
+  rememberShortcutsOnClose: true,
   toolsTrackOwnSize: false,
   mouseWheelAdjustsPenSize: false,
   startOnWindowsStartup: false,
-  checkUpdatesOnStartup: false,
+  checkUpdatesOnStartup: true,
   language: 'Türkçe',
   
   screenshotSaveMode: 'folder',
-  screenshotFolder: 'Masaüstü',
+  screenshotFolder: '', // filled with the real Desktop path at startup
   captureFullDesktop: false,
   
   whiteboardMode: 'all',
@@ -118,22 +141,34 @@ export const DEFAULT_SETTINGS: Settings = {
   disableToolNotifications: false,
   
   disableShortcuts: false,
-  
+
+  textFontFamily: 'Arial',
+  textFontSize: 24,
+  textBold: false,
+  textItalic: false,
+  textUnderline: false,
+  textAlignment: 'left',
+  textBackground: false,
+
+  settingsVersion: SETTINGS_VERSION,
+
+  // Ctrl+Shift (Control on macOS) is used instead of CmdOrCtrl+Shift because the
+  // shortcuts are registered system-wide and Cmd+Shift+3/4/5 are macOS screenshot keys.
   shortcuts: {
-    toggleToolbar: 'CmdOrCtrl+Shift+0',
-    toggleInk: 'CmdOrCtrl+Shift+1',
-    select: 'CmdOrCtrl+Shift+2',
-    pen: 'CmdOrCtrl+Shift+3',
-    highlighter: 'CmdOrCtrl+Shift+4',
-    laser: 'CmdOrCtrl+Shift+8',
-    eraser: 'CmdOrCtrl+Shift+5',
-    clear: 'CmdOrCtrl+Shift+7',
-    undo: 'CmdOrCtrl+Shift+6',
-    redo: 'CmdOrCtrl+Shift+Y',
-    screenshot: 'CmdOrCtrl+Shift+PrintScreen',
-    increaseBrush: 'CmdOrCtrl+Shift+]',
-    decreaseBrush: 'CmdOrCtrl+Shift+[',
-    changeToLastColor: 'CmdOrCtrl+Shift+9',
+    toggleToolbar: 'Ctrl+Shift+0',
+    toggleInk: 'Ctrl+Shift+1',
+    select: 'Ctrl+Shift+2',
+    pen: 'Ctrl+Shift+3',
+    highlighter: 'Ctrl+Shift+4',
+    laser: 'Ctrl+Shift+8',
+    eraser: 'Ctrl+Shift+5',
+    clear: 'Ctrl+Shift+7',
+    undo: 'Ctrl+Shift+6',
+    redo: 'Ctrl+Shift+Y',
+    screenshot: isMacPlatform ? 'Ctrl+Shift+S' : 'Ctrl+Shift+PrintScreen',
+    increaseBrush: 'Ctrl+Shift+]',
+    decreaseBrush: 'Ctrl+Shift+[',
+    changeToLastColor: 'Ctrl+Shift+9',
     quickColor1: 'Alt+Shift+1',
     quickColor2: 'Alt+Shift+2',
     quickColor3: 'Alt+Shift+3',
@@ -192,9 +227,9 @@ export const translations = {
     askAlways: 'Her zaman nerede kaydedileceğini sor',
     saveAlwaysToFolder: 'Her zaman bu klasöre kaydet:',
     captureFullDesktop: 'Her zaman tam masaüstü görüntüsü al',
-    whiteboard: 'Beyaz tahta',
-    whiteboardAllScreens: 'Beyaz tahta tüm ekranlarda görünür',
-    whiteboardSingleScreen: 'Beyaz tahta bir ekranda görünür',
+    whiteboard: 'Çizim ekranı',
+    whiteboardAllScreens: 'Ana ekranda göster',
+    whiteboardSingleScreen: 'Seçilen ekranda göster',
     ghostMode: 'Hayalet modu',
     ghostModeDesc: 'Bu modu etkinleştirmek, araç çubuğunu gizlemenize ve araçları yalnızca kısayol tuşlarıyla kullanmaya devam etmenize imkan sağlar. Bu özellik devre dışı bırakıldığında, araç çubuğunu gizlemeye çalışmak mürekkebin de gizlenmesine neden olacaktır.',
     enableGhostMode: 'Hayalet modunu etkinleştir',
@@ -205,6 +240,25 @@ export const translations = {
     unassigned: 'Atanmadı',
     showSubShortcuts: 'Alt Kısayolları Göster',
     screenLabel: 'Ekran',
+    appearance: 'Görünüm',
+    themeDark: 'Koyu',
+    themeLight: 'Açık',
+    themeColorful: 'Renkli',
+    themeAccent: 'Ana renk',
+    themeCustomColor: 'Özel renk seç',
+    themeTones: 'Araç çubuğu ve menüler bu rengin tonlarıyla boyanır.',
+    autoShapeRecognition: 'Çizip bekleyince şekle dönüştür',
+    confirmBeforeClearing: 'Temizlemeden önce onay iste',
+    confirmBeforeDeleting: 'Çoklu silmeden önce onay iste',
+    laserSize: 'Lazer boyutu',
+    textDefaults: 'Yeni metin varsayılanları',
+    textFont: 'Yazı tipi',
+    textSize: 'Boyut',
+    textBackground: 'Arka plan',
+    singleScreenNote: 'Çizim katmanı seçilen ekranda açılır.',
+    allScreensNote: 'Çizim katmanı ana ekranda açılır.',
+    globalShortcutsNote: 'Değiştirici tuş (Ctrl, Alt, Shift, Cmd) içeren kısayollar diğer uygulamalar açıkken de çalışır.',
+    shortcutTaken: 'başka bir uygulama kullanıyor; yalnızca MaliPen etkinken çalışır',
 
     // Shortcut Names
     shortcutToggleToolbar: 'Araç çubuğu görünürlüğünü değiştir',
@@ -270,9 +324,9 @@ export const translations = {
     askAlways: 'Always ask where to save',
     saveAlwaysToFolder: 'Always save to this folder:',
     captureFullDesktop: 'Always capture full desktop',
-    whiteboard: 'Whiteboard',
-    whiteboardAllScreens: 'Whiteboard visible on all screens',
-    whiteboardSingleScreen: 'Whiteboard visible on single screen',
+    whiteboard: 'Drawing screen',
+    whiteboardAllScreens: 'Show on the main screen',
+    whiteboardSingleScreen: 'Show on a chosen screen',
     ghostMode: 'Ghost mode',
     ghostModeDesc: 'Enabling this mode allows you to hide the toolbar while continuing to draw using shortcuts. If disabled, hiding the toolbar will also hide your ink.',
     enableGhostMode: 'Enable ghost mode',
@@ -283,6 +337,25 @@ export const translations = {
     unassigned: 'Unassigned',
     showSubShortcuts: 'Show Sub-Shortcuts',
     screenLabel: 'Screen',
+    appearance: 'Appearance',
+    themeDark: 'Dark',
+    themeLight: 'Light',
+    themeColorful: 'Colorful',
+    themeAccent: 'Main colour',
+    themeCustomColor: 'Pick a custom colour',
+    themeTones: 'The toolbar and menus are painted in tones of this colour.',
+    autoShapeRecognition: 'Draw and hold to snap to a shape',
+    confirmBeforeClearing: 'Confirm before clearing',
+    confirmBeforeDeleting: 'Confirm before deleting several items',
+    laserSize: 'Laser size',
+    textDefaults: 'New text defaults',
+    textFont: 'Font',
+    textSize: 'Size',
+    textBackground: 'Background',
+    singleScreenNote: 'The drawing layer opens on the selected screen.',
+    allScreensNote: 'The drawing layer opens on the main screen.',
+    globalShortcutsNote: 'Shortcuts with a modifier (Ctrl, Alt, Shift, Cmd) also work while other apps are focused.',
+    shortcutTaken: 'is used by another app; works only while MaliPen is focused',
 
     // Shortcut Names
     shortcutToggleToolbar: 'Toggle Toolbar',
