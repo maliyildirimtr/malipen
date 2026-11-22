@@ -73,7 +73,8 @@
       "extendInfo": {
         "ITSAppUsesNonExemptEncryption": false
       },
-      "artifactName": "MaliPen-mas-${version}.${ext}"
+      "artifactName": "MaliPen-mas-${version}.${ext}",
+      "identity": "3rd Party Mac Developer"
     },
     "dmg": {
       "title": "MaliPen Installer",
