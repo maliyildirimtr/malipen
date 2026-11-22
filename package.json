@@ -93,7 +93,8 @@
       "publisherDisplayName": "Mehmet Ali YILDIRIM",
       "displayName": "MaliPen",
       "applicationId": "MaliPen",
-      "artifactName": "MaliPen-Store-${version}-${arch}.${ext}"
+      "artifactName": "MaliPen-Store-${version}-${arch}.${ext}",
+      "backgroundColor": "transparent"
     }
   },
   "dependencies": {

@@ -59,9 +59,21 @@ jobs:
         run: |
           # Tag builds go to the GitHub release (auto-update feed); manual runs only build
           if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.publish_dmg }}" = "true" ]; then PUBLISH=always; else PUBLISH=never; fi
-          npx --no-install electron-builder --mac dmg zip --universal --publish "$PUBLISH"
+          EXTRA=""
+          if [ -z "$CSC_LINK" ]; then
+            # No Developer ID secrets yet: ship an unsigned DMG (as 1.0.3) so the download link keeps working
+            echo "::warning::MAC_DEVELOPER_ID_P12_BASE64 is not set — building an UNSIGNED, un-notarized DMG"
+            unset CSC_LINK CSC_KEY_PASSWORD
+            export CSC_IDENTITY_AUTO_DISCOVERY=false
+            EXTRA="-c.mac.notarize=false -c.mac.identity=null"
+            echo "SIGNED=false" >> "$GITHUB_ENV"
+          else
+            echo "SIGNED=true" >> "$GITHUB_ENV"
+          fi
+          npx --no-install electron-builder --mac dmg zip --universal --publish "$PUBLISH" $EXTRA
 
       - name: Verify signature and notarization
+        if: env.SIGNED == 'true'
         run: |
           APP=$(find release -maxdepth 2 -name 'MaliPen.app' -type d | head -1)
           codesign --verify --deep --strict --verbose=2 "$APP"
@@ -94,14 +106,22 @@ jobs:
       - name: Restore provisioning profile
         env:
           MAS_PROVISION_PROFILE_BASE64: ${{ secrets.MAS_PROVISION_PROFILE_BASE64 }}
+          MAS_CERTS_P12_BASE64: ${{ secrets.MAS_CERTS_P12_BASE64 }}
         run: |
-          test -n "$MAS_PROVISION_PROFILE_BASE64" || { echo "::error::MAS_PROVISION_PROFILE_BASE64 secret is missing"; exit 1; }
+          if [ -z "$MAS_PROVISION_PROFILE_BASE64" ] || [ -z "$MAS_CERTS_P12_BASE64" ]; then
+            echo "::warning::Mac App Store secrets are not set (see docs/MAC_SIGNING.md) — skipping the App Store build"
+            echo "MAS_READY=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          echo "MAS_READY=true" >> "$GITHUB_ENV"
           echo "$MAS_PROVISION_PROFILE_BASE64" | base64 --decode > build/MaliPen_Mac_App_Store.provisionprofile
 
       - name: Build renderer + main
+        if: env.MAS_READY == 'true'
         run: npm run build
 
       - name: Build and sign the App Store package
+        if: env.MAS_READY == 'true'
         env:
           # One .p12 holding BOTH "Apple Distribution" and "Mac Installer Distribution"
           CSC_LINK: ${{ secrets.MAS_CERTS_P12_BASE64 }}
@@ -109,19 +129,21 @@ jobs:
         run: npx --no-install electron-builder --mac mas --universal --publish never
 
       - name: Check the package
+        if: env.MAS_READY == 'true'
         run: |
           PKG=$(ls release/mas-universal/*.pkg 2>/dev/null || ls release/*.pkg)
           echo "PKG=$PKG" >> "$GITHUB_ENV"
           pkgutil --check-signature "$PKG"
 
       - uses: actions/upload-artifact@v4
+        if: env.MAS_READY == 'true'
         with:
           name: MaliPen-mas-pkg
           path: ${{ env.PKG }}
           if-no-files-found: error
 
       - name: Upload to App Store Connect
-        if: github.event_name == 'workflow_dispatch' && inputs.upload_to_app_store
+        if: env.MAS_READY == 'true' && github.event_name == 'workflow_dispatch' && inputs.upload_to_app_store
         env:
           ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}

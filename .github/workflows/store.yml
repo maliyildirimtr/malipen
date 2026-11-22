@@ -55,6 +55,11 @@ jobs:
           if ($application.Id -ne "MaliPen") { throw "Unexpected Application.Id: $($application.Id)" }
           if ($deviceFamily.Name -ne "Windows.Desktop") { throw "Unexpected device family: $($deviceFamily.Name)" }
 
+          # Certification 10.1.1.11: our own tile icons, not electron-builder's sample ones
+          $tile = $manifest.Package.Applications.Application.VisualElements.DefaultTile
+          if (-not (Test-Path (Join-Path $extractDir "assets/Square150x150Logo.scale-100.png"))) { throw "Custom tile icons (build/appx) are missing from the package." }
+          if (Get-ChildItem $extractDir -Recurse -Filter "SampleAppx*") { throw "Default sample tile icons found in the package." }
+
           Copy-Item (Join-Path $extractDir "AppxManifest.xml") release/AppxManifest.xml
           Write-Host "Validated $($package.Name) — version $($identity.Version)"
 
