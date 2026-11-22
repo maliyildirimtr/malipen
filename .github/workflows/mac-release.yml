@@ -56,7 +56,12 @@ jobs:
             echo "::warning::APPLE_ID / APPLE_APP_SPECIFIC_PASSWORD / APPLE_TEAM_ID missing"; exit 0
           fi
           # Fails fast with Apple's own message (wrong password, missing agreement, team mismatch)
-          xcrun notarytool history --apple-id "$APPLE_ID" --password "$APPLE_APP_SPECIFIC_PASSWORD" --team-id "$APPLE_TEAM_ID" | head -5
+          if ! out=$(xcrun notarytool history --apple-id "$APPLE_ID" --password "$APPLE_APP_SPECIFIC_PASSWORD" --team-id "$APPLE_TEAM_ID" 2>&1); then
+            echo "$out"
+            echo "::error::Apple rejected the notarization login. Check the APPLE_ID and APPLE_APP_SPECIFIC_PASSWORD secrets (docs/MAC_SIGNING.md)."
+            exit 1
+          fi
+          echo "Apple notarization login OK"
 
       - name: Build, sign, notarize and publish
         env:
